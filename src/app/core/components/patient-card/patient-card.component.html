@@ -1,0 +1,16 @@
+<mat-card class="patient-card">
+  <mat-card-header>
+    <div mat-card-avatar class="patient-card-header-image"></div>
+    <mat-card-title (click)="loadProfile()">Dana Harris</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div fxLayout="row">
+      <mat-label fxFlex="50%" fxLayoutGap="16px grid">Address: </mat-label>
+      <div fxFlex="50%" fxLayoutGap="16px grid">
+        <div class="street">32226 Mercury Way</div>
+        <div class="city-state-zip">Union City, CA 94587</div>
+      </div>
+    </div>
+    <mat-label>Associated Clinic: </mat-label><div class="clinic">Foster</div>
+  </mat-card-content>
+</mat-card>
