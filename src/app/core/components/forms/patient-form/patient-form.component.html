@@ -1,0 +1,72 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title><mat-icon>account_circle</mat-icon>{{createUpdate}} Patient</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <mat-grid-list cols="2" rowHeight="100px" gutterSize="5px">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Name</mat-label>
+            <input formControlName="name" matInput placeholder="Patient Name">
+            <mat-hint>Name of patient.</mat-hint>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="2" rowHeight="100px" gutterSize="5px">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Street</mat-label>
+            <input formControlName="street" matInput placeholder="Patient street address">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="100px" gutterSize="5px">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>City</mat-label>
+            <input formControlName="city" matInput placeholder="Patient city address">
+            <mat-hint>Patient city address.</mat-hint>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>State</mat-label>
+            <input formControlName="state" matInput placeholder="Patient state address">
+            <mat-hint>Patient state address.</mat-hint>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Zip</mat-label>
+            <input formControlName="zipCode" matInput placeholder="Patient zip">
+            <mat-hint>Patient zip code.</mat-hint>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="2" rowHeight="100px" gutterSize="5px">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Clinic</mat-label>
+            <input formControlName="clinic" matInput placeholder="Patient clinic">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="1" rowHeight="175px" gutterSize="5px">
+        <mat-grid-tile class="description-tile">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="description" matInput placeholder="Description for patient."></textarea>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="1" rowHeight="50px" gutterSize="5px">
+        <mat-grid-tile class="full-width-footer">
+          <button mat-raised-button type="submit" [disabled]="registerForm.invalid" color="primary"
+            class="footer-button">{{createUpdate}}</button>
+          <button mat-raised-button type="reset" (click)="onCancel()" color="warn" class="footer-button">Cancel</button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </mat-card-content>
+</mat-card>

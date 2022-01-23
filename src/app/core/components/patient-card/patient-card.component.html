@@ -1,16 +1,24 @@
 <mat-card class="patient-card">
   <mat-card-header>
-    <div mat-card-avatar class="patient-card-header-image"></div>
-    <mat-card-title (click)="loadProfile()">Dana Harris</mat-card-title>
+    <mat-card-title (click)="loadProfile()"><mat-icon>account_circle</mat-icon>{{patientProfile.name}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div fxLayout="row">
-      <mat-label fxFlex="50%" fxLayoutGap="16px grid">Address: </mat-label>
+    <div fxLayout="row" class="patient-card-address">
+      <mat-label class="patient-card-label" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">Address: </mat-label>
       <div fxFlex="50%" fxLayoutGap="16px grid">
-        <div class="street">32226 Mercury Way</div>
-        <div class="city-state-zip">Union City, CA 94587</div>
+        <div class="street">{{patientProfile.address.street}}</div>
+        <div class="city-state-zip">{{patientProfile.address.city}}, {{patientProfile.address.state}} {{patientProfile.address.zipCode}}</div>
       </div>
     </div>
-    <mat-label>Associated Clinic: </mat-label><div class="clinic">Foster</div>
+    <div fxLayout="row" class="patient-card-clinic">
+      <mat-label class="patient-card-label" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">Associated Clinic: </mat-label>
+      <div class="clinic">{{patientProfile.clinic}}</div>
+    </div>
+    <div fxLayout="row" class="patient-card-description" *ngIf="isFullProfile">
+      <mat-label class="patient-card-label" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">Description: </mat-label>
+      <div fxFlex="50%" fxLayoutGap="16px grid">
+        {{patientProfile.description}}
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>

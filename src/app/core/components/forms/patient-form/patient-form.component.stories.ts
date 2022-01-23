@@ -1,7 +1,8 @@
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { MaterialsModule } from '../../materials/materials.module';
-import { PatientCardComponent } from './patient-card.component';
+import { MaterialsModule } from '../../../materials/materials.module';
+import { PatientFormComponent } from './patient-form.component';
 
 const patientProfile = {
   id: 1,
@@ -16,15 +17,29 @@ const patientProfile = {
   description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'
 };
 
+const patientProfileNew = {
+  id: null,
+  name: '',
+  address: {
+    street: '',
+    city: '',
+    state: '',
+    zipCode: 0
+  },
+  clinic: '',
+  description: ''
+};
+
 export default {
-  title: 'App/Core/Patient Card',
-  component: PatientCardComponent,
+  title: 'App/Core/Patient Form',
+  component: PatientFormComponent,
   decorators: [
     moduleMetadata({
-      declarations: [PatientCardComponent],
+      declarations: [PatientFormComponent],
       imports: [
         MaterialsModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        ReactiveFormsModule
       ],
       providers: [],
     }),
@@ -35,16 +50,14 @@ const Template: Story = (args) => ({
   props: args,
 });
 
-export const SummaryProfile = Template.bind({});
-SummaryProfile.args = {
-  patientProfile,
-  isFullProfile: false
+export const NewProfile = Template.bind({});
+NewProfile.args = {
+  patientProfileNew
 };
 
-export const FullProfile = Template.bind({});
-FullProfile.args = {
-  patientProfile,
-  isFullProfile: true
+export const EditProfile = Template.bind({});
+EditProfile.args = {
+  patientProfile
 };
 
 
