@@ -17,6 +17,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { metaReducers, reducers } from './core/store/reducers';
+import { patientStateFeatureKey } from './core/store/patient';
 
 @NgModule({
   declarations: [
@@ -32,10 +34,15 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     BrowserAnimationsModule,
     FlexLayoutModule,
     MaterialsModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

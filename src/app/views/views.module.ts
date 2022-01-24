@@ -4,6 +4,10 @@ import { PatientListComponent } from './patient-list/patient-list.component';
 import { MaterialsModule } from '../core/materials/materials.module';
 import { CoreModule } from '../core/core.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { StoreModule } from '@ngrx/store';
+import { PatientEffects } from '../core/store/patient/patient.effects';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromPatientState from '../core/store/patient/index';
 
 @NgModule({
   declarations: [
@@ -13,7 +17,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     MaterialsModule,
     CoreModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    StoreModule.forFeature(
+      fromPatientState.patientStateFeatureKey,
+      fromPatientState.reducers,
+      { metaReducers: fromPatientState.metaReducers }
+    ),
+    EffectsModule.forFeature([PatientEffects]),
   ]
 })
 export class ViewsModule { }

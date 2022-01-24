@@ -1,33 +1,20 @@
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { PatientProfile } from '../../../types/patient';
 import { MaterialsModule } from '../../../materials/materials.module';
 import { PatientFormComponent } from './patient-form.component';
 
-const patientProfile = {
-  id: 1,
-  name: 'John Doe',
-  address: {
-    street: '32568 Willets Street',
-    city: 'Santa Barbara',
-    state: 'CA',
-    zipCode: 94687
-  },
-  clinic: 'Health Clinic of America',
-  description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'
-};
-
-const patientProfileNew = {
+let patientProfile: PatientProfile = {
   id: null,
   name: '',
-  address: {
-    street: '',
-    city: '',
-    state: '',
-    zipCode: 0
-  },
+  street: '',
+  city: '',
+  state: '',
+  zipCode: '',
   clinic: '',
-  description: ''
+  description: '',
 };
 
 export default {
@@ -39,11 +26,12 @@ export default {
       imports: [
         MaterialsModule,
         FlexLayoutModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
       ],
       providers: [],
     }),
-  ]
+  ],
 } as Meta;
 
 const Template: Story = (args) => ({
@@ -52,13 +40,42 @@ const Template: Story = (args) => ({
 
 export const NewProfile = Template.bind({});
 NewProfile.args = {
-  patientProfileNew
+  patientProfile,
+  isNew: true,
+};
+
+const controlsConfig = {
+  id: 1,
+  name: 'John Doe',
+  street: '32568 Willets Street',
+  city: 'Santa Barbara',
+  state: 'CA',
+  zipCode: '94687',
+  clinic: 'Health Clinic of America',
+  description:
+    'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.',
+};
+
+const registerForm = {
+  ...controlsConfig,
+};
+
+patientProfile = {
+  id: 1,
+  name: 'John Doe',
+  street: '32568 Willets Street',
+  city: 'Santa Barbara',
+  state: 'CA',
+  zipCode: '94687',
+  clinic: 'Health Clinic of America',
+  description:
+    'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.',
 };
 
 export const EditProfile = Template.bind({});
 EditProfile.args = {
-  patientProfile
+  isNew: true,
+  patientProfile,
+  controlsConfig,
+  registerForm: new FormBuilder(),
 };
-
-
-

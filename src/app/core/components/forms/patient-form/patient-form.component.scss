@@ -10,6 +10,24 @@
       margin-right: 5px;
     }
   }
+
+  .mat-card-content {
+    margin-bottom: 16px;
+    margin-top: 10px;
+    border-top: 1px solid lightgray;
+  }
+
+  .patient-form-row {
+    margin: 20px 0;
+
+    .group {
+      margin: 0 0 20px 0 !important;
+
+      &:last-child {
+        margin: 0 !important;
+      }
+    }
+  }
 }
 
 ::ng-deep .mat-grid-tile-content {
@@ -34,10 +52,7 @@
 }
 
 .full-width-footer {
-  ::ng-deep .mat-grid-tile-content {
-    justify-content: right !important;
-  }
-
+  justify-content: right !important;
 
   button {
     margin: 0 5px 10px;

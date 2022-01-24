@@ -7,6 +7,11 @@
     display: inline-flex;
     line-height: 1.3;
 
+    &:hover {
+      color:darkgray;
+      cursor: pointer;
+    }
+
     .mat-icon {
       margin-right: 5px;
     }

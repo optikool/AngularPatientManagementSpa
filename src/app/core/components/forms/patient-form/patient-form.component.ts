@@ -1,31 +1,30 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PatientProfile, PatientProfileFlat } from 'src/app/core/types/patient';
+import { PatientProfile } from 'src/app/core/types/patient';
 
 @Component({
   selector: 'app-patient-form',
   templateUrl: './patient-form.component.html',
-  styleUrls: ['./patient-form.component.scss']
+  styleUrls: ['./patient-form.component.scss'],
 })
 export class PatientFormComponent implements OnInit {
   @Input() public patientProfile: PatientProfile;
+  @Input() public isNew: boolean = false;
 
-  public controlsConfig: PatientProfileFlat;
+  public controlsConfig: PatientProfile;
   public registerForm: FormGroup;
-  public createUpdate: string = 'Create';
+  public createUpdate: string = this.isNew ? 'Create' : 'Update';
 
-  constructor(
-    private formBuilder: FormBuilder,
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.registerForm = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
-      street: [''],
-      city: [''],
-      state: [''],
-      zipCode: [''],
+      street: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      zipCode: ['', Validators.required],
       clinic: [''],
-      description: ['']
+      description: [''],
     });
 
     this.controlsConfig = {
@@ -36,20 +35,18 @@ export class PatientFormComponent implements OnInit {
       state: '',
       zipCode: '',
       clinic: '',
-      description: ''
+      description: '',
     };
 
     this.patientProfile = {
       id: null,
       name: '',
-      address: {
-        street: '',
-        city: '',
-        state: '',
-        zipCode: ''
-      },
+      street: '',
+      city: '',
+      state: '',
+      zipCode: '',
       clinic: '',
-      description: ''
+      description: '',
     };
   }
 
@@ -57,14 +54,15 @@ export class PatientFormComponent implements OnInit {
     this.controlsConfig = {
       id: this.patientProfile.id,
       name: this.patientProfile.name,
-      street: this.patientProfile.address.street,
-      city: this.patientProfile.address.city,
-      state: this.patientProfile.address.state,
-      zipCode: this.patientProfile.address.zipCode,
+      street: this.patientProfile.street,
+      city: this.patientProfile.city,
+      state: this.patientProfile.state,
+      zipCode: this.patientProfile.zipCode,
       clinic: this.patientProfile.clinic,
-      description: this.patientProfile.description
+      description: this.patientProfile.description,
     };
-
+    console.log('this.patientProfile: ', this.patientProfile);
+    console.log('this.controlsConfig: ', this.controlsConfig);
     this.registerForm.reset(this.controlsConfig);
   }
 
@@ -74,9 +72,9 @@ export class PatientFormComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void {}
 
+  get f() {
+    return this.registerForm && this.registerForm.controls;
   }
-
-  get f() { return this.registerForm && this.registerForm.controls; }
 }
