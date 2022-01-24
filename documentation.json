@@ -2,16 +2,64 @@
     "pipes": [],
     "interfaces": [
         {
-            "name": "PatientAddress",
-            "id": "interface-PatientAddress-678c3d9dea61a2496864de2be5b57bc1fa5622487ab2a78ad5b4bd7baa863c55b5f99c3be0d2c2c0f8d928daa1de275ee12e8539e72cc6794f93626126030ec3",
+            "name": "AppState",
+            "id": "interface-AppState-5565632eb29c7567a57fa70f094de9e91e0a9b81b2c480ef5cdb40106e546693d88877d7c4b1f1fdd7c7b035cd54ba6f69802f1cfc99751fe2ca3d5f082e44b9",
+            "file": "src/app/core/store/reducers/index.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {\r\n    ActionReducerMap,\r\n    MetaReducer\r\n  } from \"@ngrx/store\";\r\n  import { environment } from \"../../../../environments/environment\";\r\n\r\n  export interface AppState {}\r\n\r\n  export const reducers: ActionReducerMap<AppState> = {};\r\n\r\n  export const metaReducers: MetaReducer<AppState>[] = !environment.production\r\n    ? []\r\n    : [];\r\n  ",
+            "properties": [],
+            "indexSignatures": [],
+            "methods": []
+        },
+        {
+            "name": "PatientProfile",
+            "id": "interface-PatientProfile-0a2ae00678ab5a37c6278d1052cf0dc8733a73e4ee1522ee77fadf5ab2994583ac022204c10f4491c29a4d4b28a8484f3b890b828f4c682931b94ccb2cccb69a",
             "file": "src/app/core/types/patient.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface PatientAddress {\r\n  street: string;\r\n  city: string;\r\n  state: string;\r\n  zipCode: string;\r\n}\r\nexport interface PatientProfile {\r\n  id: number | null;\r\n  name: string;\r\n  address: PatientAddress;\r\n  clinic: string;\r\n  description: string;\r\n}\r\n\r\nexport interface PatientProfileFlat {\r\n  id: number | null;\r\n  name: string;\r\n  street: string;\r\n  city: string;\r\n  state: string;\r\n  zipCode: string;\r\n  clinic: string;\r\n  description: string;\r\n}\r\n",
+            "sourceCode": "export interface PatientProfile {\r\n  id: number | null;\r\n  name: string;\r\n  street: string;\r\n  city: string;\r\n  state: string;\r\n  zipCode: string;\r\n  clinic: string;\r\n  description: string;\r\n}\r\n",
             "properties": [
                 {
                     "name": "city",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "clinic",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "name",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -26,7 +74,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 4
+                    "line": 6
                 },
                 {
                     "name": "street",
@@ -35,7 +83,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 2
+                    "line": 4
                 },
                 {
                     "name": "zipCode",
@@ -44,7 +92,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 5
+                    "line": 7
                 }
             ],
             "indexSignatures": [],
@@ -52,144 +100,40 @@
             "methods": []
         },
         {
-            "name": "PatientProfile",
-            "id": "interface-PatientProfile-678c3d9dea61a2496864de2be5b57bc1fa5622487ab2a78ad5b4bd7baa863c55b5f99c3be0d2c2c0f8d928daa1de275ee12e8539e72cc6794f93626126030ec3",
-            "file": "src/app/core/types/patient.ts",
+            "name": "PatientState",
+            "id": "interface-PatientState-ab4d10db2d56c17179dcc7d747f212bc11c6829441a1de82b47fddf54107a1ecf4a6e367f8676121a4c6f3a0956a205ad53331a762c6d9fdb1ec312fda2e2967",
+            "file": "src/app/core/store/patient/index.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface PatientAddress {\r\n  street: string;\r\n  city: string;\r\n  state: string;\r\n  zipCode: string;\r\n}\r\nexport interface PatientProfile {\r\n  id: number | null;\r\n  name: string;\r\n  address: PatientAddress;\r\n  clinic: string;\r\n  description: string;\r\n}\r\n\r\nexport interface PatientProfileFlat {\r\n  id: number | null;\r\n  name: string;\r\n  street: string;\r\n  city: string;\r\n  state: string;\r\n  zipCode: string;\r\n  clinic: string;\r\n  description: string;\r\n}\r\n",
+            "sourceCode": "import { createReducer, MetaReducer, on } from '@ngrx/store';\r\nimport { environment } from '../../../../environments/environment';\r\nimport { PatientProfile } from '../../types/patient';\r\nimport * as fromPatientActions from './patient.actions';\r\n\r\nexport const patientStateFeatureKey = 'patientState';\r\n\r\nexport interface PatientState {\r\n  patients: PatientProfile[];\r\n  patient: PatientProfile;\r\n  error?: any;\r\n}\r\n\r\nexport const initialState: PatientState = {\r\n  patients: [],\r\n  patient: {\r\n    id: null,\r\n    name: '',\r\n    street: '',\r\n    city: '',\r\n    state: '',\r\n    zipCode: '',\r\n    clinic: '',\r\n    description: '',\r\n  },\r\n  error: undefined\r\n};\r\n\r\nexport const reducers = createReducer(\r\n  initialState,\r\n  // on(fromPatientActions.loadPatients, (state: PatientState, action) => {\r\n  //   console.log('reducers loadPatients action: ', action);\r\n  //   console.log('reducers loadPatients state: ', state);\r\n  //   return {\r\n  //     ...state,\r\n  //     //patients: action.patients\r\n  //   }\r\n  // }),\r\n  on(fromPatientActions.loadPatientSuccess, (state: PatientState, action) => {\r\n    console.log('loadPatientSuccess state: ', state);\r\n    console.log('loadPatientSuccess action: ', action);\r\n    return {\r\n      ...state,\r\n      patient: action.patient\r\n    }\r\n  }),\r\n  on(fromPatientActions.loadPatientsSuccess, (state: PatientState, action) => {\r\n    console.log('loadPatientsSuccess state: ', state);\r\n    console.log('loadPatientsSuccess action: ', action);\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.loadPatientsFailure, (state, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.createPatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.createPatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.updatePatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.updatePatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.deletePatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.deletePatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  })\r\n);\r\n\r\nexport const metaReducers: MetaReducer<PatientState>[] = !environment.production ? [] : [];\r\n",
             "properties": [
                 {
-                    "name": "address",
+                    "name": "error",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "PatientAddress",
+                    "type": "any",
+                    "optional": true,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "patient",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PatientProfile",
                     "optional": false,
                     "description": "",
                     "line": 10
                 },
                 {
-                    "name": "clinic",
+                    "name": "patients",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 11
-                },
-                {
-                    "name": "description",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 12
-                },
-                {
-                    "name": "id",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number | null",
-                    "optional": false,
-                    "description": "",
-                    "line": 8
-                },
-                {
-                    "name": "name",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
+                    "type": "PatientProfile[]",
                     "optional": false,
                     "description": "",
                     "line": 9
-                }
-            ],
-            "indexSignatures": [],
-            "kind": 165,
-            "methods": []
-        },
-        {
-            "name": "PatientProfileFlat",
-            "id": "interface-PatientProfileFlat-678c3d9dea61a2496864de2be5b57bc1fa5622487ab2a78ad5b4bd7baa863c55b5f99c3be0d2c2c0f8d928daa1de275ee12e8539e72cc6794f93626126030ec3",
-            "file": "src/app/core/types/patient.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "interface",
-            "sourceCode": "export interface PatientAddress {\r\n  street: string;\r\n  city: string;\r\n  state: string;\r\n  zipCode: string;\r\n}\r\nexport interface PatientProfile {\r\n  id: number | null;\r\n  name: string;\r\n  address: PatientAddress;\r\n  clinic: string;\r\n  description: string;\r\n}\r\n\r\nexport interface PatientProfileFlat {\r\n  id: number | null;\r\n  name: string;\r\n  street: string;\r\n  city: string;\r\n  state: string;\r\n  zipCode: string;\r\n  clinic: string;\r\n  description: string;\r\n}\r\n",
-            "properties": [
-                {
-                    "name": "city",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 19
-                },
-                {
-                    "name": "clinic",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 22
-                },
-                {
-                    "name": "description",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 23
-                },
-                {
-                    "name": "id",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number | null",
-                    "optional": false,
-                    "description": "",
-                    "line": 16
-                },
-                {
-                    "name": "name",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 17
-                },
-                {
-                    "name": "state",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 20
-                },
-                {
-                    "name": "street",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 18
-                },
-                {
-                    "name": "zipCode",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 21
                 }
             ],
             "indexSignatures": [],
@@ -199,28 +143,453 @@
     ],
     "injectables": [
         {
-            "name": "PatientService",
-            "id": "injectable-PatientService-68197f7b205aee315e51e87bd114efef0cb6d906c876c85e7482bc347757abb170a6d4634c06388b7b9609cad9a3f9760ebc0c6328f2841a98ea3dda3682b9ef",
-            "file": "src/app/core/services/patient.service.ts",
-            "properties": [],
+            "name": "PatientEffects",
+            "id": "injectable-PatientEffects-f50e239debfb83d632383fc61f0df038098e9bad1a59235ca62669956c0cfc76d94403eeaafdcacba440e93d679e0dedae5eae173c7cd0d5adba10c920847c21",
+            "file": "src/app/core/store/patient/patient.effects.ts",
+            "properties": [
+                {
+                    "name": "createPatient$",
+                    "defaultValue": "createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.CREATE_PATIENT),\r\n    mergeMap((patient: PatientProfile) => this.storeService.createPatient(patient)\r\n      .pipe(\r\n        map(patients => fromPatientActions.createPatientSuccess({patients})),\r\n        catchError(error => of(fromPatientActions.createPatientFailure({error})))\r\n      ))\r\n  ))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 46
+                },
+                {
+                    "name": "deletePatient$",
+                    "defaultValue": "createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.DELETE_PATIENT),\r\n    mergeMap((data) => this.storeService.deletePatient(data)\r\n      .pipe(\r\n        map(patients => fromPatientActions.deletePatientSuccess({patients})),\r\n        catchError(error => of(fromPatientActions.deletePatientFailure({error})))\r\n      ))\r\n  ))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 64
+                },
+                {
+                    "name": "loadPatient$",
+                    "defaultValue": "createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.LOAD_PATIENT),\r\n    mergeMap((action) => this.storeService.getPatient(action)\r\n      .pipe(\r\n        map(patient => fromPatientActions.loadPatientSuccess({patient})),\r\n        catchError(error => of(fromPatientActions.loadPatientFailure({error})))\r\n      )\r\n    )\r\n  ))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 36
+                },
+                {
+                    "name": "loadPatients$",
+                    "defaultValue": "createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.LOAD_PATIENTS),\r\n    mergeMap(() => this.storeService.getPatients()\r\n      .pipe(\r\n          mergeMap(patients => {\r\n            console.log('Load Patiends Effect: ', patients);\r\n            return [\r\n              fromPatientActions.loadPatientsSuccess({patients})\r\n            ];\r\n          }),\r\n          catchError(error => of(fromPatientActions.loadPatientsFailure({error})))\r\n      )\r\n    )\r\n  ))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 21
+                },
+                {
+                    "name": "updatePatient$",
+                    "defaultValue": "createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.UPDATE_PATIENT),\r\n    mergeMap((patient: PatientProfile) => this.storeService.updatePatient(patient)\r\n      .pipe(\r\n        map(patients => fromPatientActions.updatePatientSuccess({patients})),\r\n        catchError(error => of(fromPatientActions.updatePatientFailure({error})))\r\n      ))\r\n  ))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 55
+                }
+            ],
             "methods": [],
             "deprecated": false,
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class PatientService {\n\n  constructor() { }\n}\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\r\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\r\nimport { PatientActionTypes }  from './patient.actions';\r\nimport * as fromPatientActions from './patient.actions';\r\nimport { StoreService } from '../../services/store.service';\r\nimport { of } from 'rxjs';\r\nimport { mergeMap, map, catchError, withLatestFrom, exhaustMap } from 'rxjs/operators';\r\nimport { Store } from '@ngrx/store';\r\nimport { PatientState } from './index';\r\nimport { selectPatients } from './patient.selectors';\r\nimport { PatientProfile } from '../../types/patient';\r\n\r\n@Injectable()\r\nexport class PatientEffects {\r\n  constructor(\r\n    private actions$: Actions,\r\n    private store$: Store<PatientState>,\r\n    private storeService: StoreService\r\n  ) {}\r\n\r\n  loadPatients$ = createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.LOAD_PATIENTS),\r\n    mergeMap(() => this.storeService.getPatients()\r\n      .pipe(\r\n          mergeMap(patients => {\r\n            console.log('Load Patiends Effect: ', patients);\r\n            return [\r\n              fromPatientActions.loadPatientsSuccess({patients})\r\n            ];\r\n          }),\r\n          catchError(error => of(fromPatientActions.loadPatientsFailure({error})))\r\n      )\r\n    )\r\n  ));\r\n\r\n  loadPatient$ = createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.LOAD_PATIENT),\r\n    mergeMap((action) => this.storeService.getPatient(action)\r\n      .pipe(\r\n        map(patient => fromPatientActions.loadPatientSuccess({patient})),\r\n        catchError(error => of(fromPatientActions.loadPatientFailure({error})))\r\n      )\r\n    )\r\n  ));\r\n\r\n  createPatient$ = createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.CREATE_PATIENT),\r\n    mergeMap((patient: PatientProfile) => this.storeService.createPatient(patient)\r\n      .pipe(\r\n        map(patients => fromPatientActions.createPatientSuccess({patients})),\r\n        catchError(error => of(fromPatientActions.createPatientFailure({error})))\r\n      ))\r\n  ));\r\n\r\n  updatePatient$ = createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.UPDATE_PATIENT),\r\n    mergeMap((patient: PatientProfile) => this.storeService.updatePatient(patient)\r\n      .pipe(\r\n        map(patients => fromPatientActions.updatePatientSuccess({patients})),\r\n        catchError(error => of(fromPatientActions.updatePatientFailure({error})))\r\n      ))\r\n  ));\r\n\r\n  deletePatient$ = createEffect(() => this.actions$.pipe(\r\n    ofType(PatientActionTypes.DELETE_PATIENT),\r\n    mergeMap((data) => this.storeService.deletePatient(data)\r\n      .pipe(\r\n        map(patients => fromPatientActions.deletePatientSuccess({patients})),\r\n        catchError(error => of(fromPatientActions.deletePatientFailure({error})))\r\n      ))\r\n  ));\r\n}\r\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "store$",
+                        "type": "Store<PatientState>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "storeService",
+                        "type": "StoreService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 14,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "store$",
+                        "type": "Store<PatientState>",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "storeService",
+                        "type": "StoreService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "PatientService",
+            "id": "injectable-PatientService-0a9972175de5fdf5a6cb621e668c253e4d76f65e747992d8248ea415dd5d99adf3e253b0e1cec79916c756d8af0f07fd864b5365db88a433156f47293cbf6e65",
+            "file": "src/app/core/services/patient.service.ts",
+            "properties": [
+                {
+                    "name": "payload",
+                    "defaultValue": "[\n    {\n      id: 1,\n      name: 'Dedra Gettone',\n      street: '0 Sloan Court',\n      city: 'Birmingham',\n      state: 'Alabama',\n      zipCode: '35244',\n      clinic: 'tristique in tempus',\n      description: 'Curabitur in libero ut massa volutpat convallis.',\n    },\n    {\n      id: 2,\n      name: 'Cristy Durram',\n      street: '7287 Birchwood Hill',\n      city: 'Cincinnati',\n      state: 'Ohio',\n      zipCode: '45264',\n      clinic: 'vestibulum ac est',\n      description:\n        'Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.',\n    },\n    {\n      id: 3,\n      name: 'Jolynn Petraitis',\n      street: '07 Grayhawk Court',\n      city: 'Wichita',\n      state: 'Kansas',\n      zipCode: '67260',\n      clinic: 'vestibulum proin',\n      description:\n        'Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue.',\n    },\n    {\n      id: 4,\n      name: 'Gerardo Scurlock',\n      street: '3478 Waxwing Plaza',\n      city: 'Dallas',\n      state: 'Texas',\n      zipCode: '75379',\n      clinic: 'convallis morbi odio',\n      description:\n        'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.',\n    },\n    {\n      id: 5,\n      name: 'Honoria Dubarry',\n      street: '8567 Walton Plaza',\n      city: 'Peoria',\n      state: 'Illinois',\n      zipCode: '61656',\n      clinic: 'lectus vestibulum quam',\n      description: 'Proin risus. Praesent lectus.',\n    },\n    {\n      id: 6,\n      name: 'Ilsa Schaben',\n      street: '9 Warbler Plaza',\n      city: 'San Jose',\n      state: 'California',\n      zipCode: '95118',\n      clinic: 'non ligula',\n      description:\n        'Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis.',\n    },\n    {\n      id: 7,\n      name: 'Sybyl Antal',\n      street: '15 Grasskamp Point',\n      city: 'Santa Monica',\n      state: 'California',\n      zipCode: '90405',\n      clinic: 'vestibulum ante',\n      description:\n        'Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla.',\n    },\n    {\n      id: 8,\n      name: 'Beatriz Morris',\n      street: '680 Morrow Alley',\n      city: 'Spring Hill',\n      state: 'Florida',\n      zipCode: '34611',\n      clinic: 'vestibulum ante',\n      description:\n        'Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.',\n    },\n    {\n      id: 9,\n      name: 'Salem Secker',\n      street: '563 Amoth Road',\n      city: 'Houston',\n      state: 'Texas',\n      zipCode: '77055',\n      clinic: 'turpis sed ante',\n      description:\n        'Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros.',\n    },\n    {\n      id: 10,\n      name: 'Rubetta Kilshaw',\n      street: '7650 Pierstorff Junction',\n      city: 'Bloomington',\n      state: 'Indiana',\n      zipCode: '47405',\n      clinic: 'odio cras',\n      description:\n        'Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci.',\n    },\n    {\n      id: 11,\n      name: 'Hewet Kira',\n      street: '6388 Maple Alley',\n      city: 'Charlotte',\n      state: 'North Carolina',\n      zipCode: '28205',\n      clinic: 'curae mauris viverra',\n      description:\n        'Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.',\n    },\n    {\n      id: 12,\n      name: 'Lowell Firmin',\n      street: '4 Reinke Crossing',\n      city: 'Pompano Beach',\n      state: 'Florida',\n      zipCode: '33064',\n      clinic: 'nibh in lectus',\n      description: 'Sed ante. Vivamus tortor.',\n    },\n    {\n      id: 13,\n      name: 'Ashlen Jurasek',\n      street: '78 Graedel Terrace',\n      city: 'Monticello',\n      state: 'Minnesota',\n      zipCode: '55565',\n      clinic: 'morbi a ipsum',\n      description:\n        'Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis. Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl.',\n    },\n    {\n      id: 14,\n      name: 'Devonna Grigore',\n      street: '9 Spenser Hill',\n      city: 'Lima',\n      state: 'Ohio',\n      zipCode: '45807',\n      clinic: 'ipsum dolor sit',\n      description:\n        'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo.',\n    },\n    {\n      id: 15,\n      name: 'Cobby Muselli',\n      street: '5 Dryden Park',\n      city: 'Monticello',\n      state: 'Minnesota',\n      zipCode: '55585',\n      clinic: 'nisi volutpat',\n      description: 'Morbi ut odio.',\n    },\n    {\n      id: 16,\n      name: 'Carly Blincko',\n      street: '13308 Summit Way',\n      city: 'Des Moines',\n      state: 'Iowa',\n      zipCode: '50315',\n      clinic: 'sit amet eleifend',\n      description:\n        'Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.',\n    },\n    {\n      id: 17,\n      name: 'Anderea Scally',\n      street: '107 Ridge Oak Parkway',\n      city: 'Memphis',\n      state: 'Tennessee',\n      zipCode: '38197',\n      clinic: 'semper interdum mauris',\n      description:\n        'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue.',\n    },\n    {\n      id: 18,\n      name: 'Antonetta Beilby',\n      street: '669 Sullivan Circle',\n      city: 'Tallahassee',\n      state: 'Florida',\n      zipCode: '32309',\n      clinic: 'commodo vulputate',\n      description: 'Ut at dolor quis odio consequat varius.',\n    },\n    {\n      id: 19,\n      name: 'Emilia Piner',\n      street: '13 Kim Hill',\n      city: 'Dallas',\n      state: 'Texas',\n      zipCode: '75221',\n      clinic: 'nunc rhoncus',\n      description:\n        'Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.',\n    },\n    {\n      id: 20,\n      name: 'Claiborne di Rocca',\n      street: '71 Pearson Street',\n      city: 'Albuquerque',\n      state: 'New Mexico',\n      zipCode: '87140',\n      clinic: 'urna pretium',\n      description:\n        'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.',\n    },\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PatientProfile[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 19
+                }
+            ],
+            "methods": [
+                {
+                    "name": "loadPatients",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "PatientProfile[]",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "openModalDialog",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<any>",
+                    "typeParameters": [],
+                    "line": 15,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Observable, of } from 'rxjs';\nimport { PatientProfile } from '../types/patient';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class PatientService {\n  constructor() {}\n\n  loadPatients(): PatientProfile[] {\n    return this.payload;\n  }\n\n  openModalDialog(): Observable<any> {\n    return of('NONE');\n  }\n\n  payload: PatientProfile[] = [\n    {\n      id: 1,\n      name: 'Dedra Gettone',\n      street: '0 Sloan Court',\n      city: 'Birmingham',\n      state: 'Alabama',\n      zipCode: '35244',\n      clinic: 'tristique in tempus',\n      description: 'Curabitur in libero ut massa volutpat convallis.',\n    },\n    {\n      id: 2,\n      name: 'Cristy Durram',\n      street: '7287 Birchwood Hill',\n      city: 'Cincinnati',\n      state: 'Ohio',\n      zipCode: '45264',\n      clinic: 'vestibulum ac est',\n      description:\n        'Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.',\n    },\n    {\n      id: 3,\n      name: 'Jolynn Petraitis',\n      street: '07 Grayhawk Court',\n      city: 'Wichita',\n      state: 'Kansas',\n      zipCode: '67260',\n      clinic: 'vestibulum proin',\n      description:\n        'Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue.',\n    },\n    {\n      id: 4,\n      name: 'Gerardo Scurlock',\n      street: '3478 Waxwing Plaza',\n      city: 'Dallas',\n      state: 'Texas',\n      zipCode: '75379',\n      clinic: 'convallis morbi odio',\n      description:\n        'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.',\n    },\n    {\n      id: 5,\n      name: 'Honoria Dubarry',\n      street: '8567 Walton Plaza',\n      city: 'Peoria',\n      state: 'Illinois',\n      zipCode: '61656',\n      clinic: 'lectus vestibulum quam',\n      description: 'Proin risus. Praesent lectus.',\n    },\n    {\n      id: 6,\n      name: 'Ilsa Schaben',\n      street: '9 Warbler Plaza',\n      city: 'San Jose',\n      state: 'California',\n      zipCode: '95118',\n      clinic: 'non ligula',\n      description:\n        'Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis.',\n    },\n    {\n      id: 7,\n      name: 'Sybyl Antal',\n      street: '15 Grasskamp Point',\n      city: 'Santa Monica',\n      state: 'California',\n      zipCode: '90405',\n      clinic: 'vestibulum ante',\n      description:\n        'Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla.',\n    },\n    {\n      id: 8,\n      name: 'Beatriz Morris',\n      street: '680 Morrow Alley',\n      city: 'Spring Hill',\n      state: 'Florida',\n      zipCode: '34611',\n      clinic: 'vestibulum ante',\n      description:\n        'Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.',\n    },\n    {\n      id: 9,\n      name: 'Salem Secker',\n      street: '563 Amoth Road',\n      city: 'Houston',\n      state: 'Texas',\n      zipCode: '77055',\n      clinic: 'turpis sed ante',\n      description:\n        'Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros.',\n    },\n    {\n      id: 10,\n      name: 'Rubetta Kilshaw',\n      street: '7650 Pierstorff Junction',\n      city: 'Bloomington',\n      state: 'Indiana',\n      zipCode: '47405',\n      clinic: 'odio cras',\n      description:\n        'Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci.',\n    },\n    {\n      id: 11,\n      name: 'Hewet Kira',\n      street: '6388 Maple Alley',\n      city: 'Charlotte',\n      state: 'North Carolina',\n      zipCode: '28205',\n      clinic: 'curae mauris viverra',\n      description:\n        'Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.',\n    },\n    {\n      id: 12,\n      name: 'Lowell Firmin',\n      street: '4 Reinke Crossing',\n      city: 'Pompano Beach',\n      state: 'Florida',\n      zipCode: '33064',\n      clinic: 'nibh in lectus',\n      description: 'Sed ante. Vivamus tortor.',\n    },\n    {\n      id: 13,\n      name: 'Ashlen Jurasek',\n      street: '78 Graedel Terrace',\n      city: 'Monticello',\n      state: 'Minnesota',\n      zipCode: '55565',\n      clinic: 'morbi a ipsum',\n      description:\n        'Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis. Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl.',\n    },\n    {\n      id: 14,\n      name: 'Devonna Grigore',\n      street: '9 Spenser Hill',\n      city: 'Lima',\n      state: 'Ohio',\n      zipCode: '45807',\n      clinic: 'ipsum dolor sit',\n      description:\n        'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo.',\n    },\n    {\n      id: 15,\n      name: 'Cobby Muselli',\n      street: '5 Dryden Park',\n      city: 'Monticello',\n      state: 'Minnesota',\n      zipCode: '55585',\n      clinic: 'nisi volutpat',\n      description: 'Morbi ut odio.',\n    },\n    {\n      id: 16,\n      name: 'Carly Blincko',\n      street: '13308 Summit Way',\n      city: 'Des Moines',\n      state: 'Iowa',\n      zipCode: '50315',\n      clinic: 'sit amet eleifend',\n      description:\n        'Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.',\n    },\n    {\n      id: 17,\n      name: 'Anderea Scally',\n      street: '107 Ridge Oak Parkway',\n      city: 'Memphis',\n      state: 'Tennessee',\n      zipCode: '38197',\n      clinic: 'semper interdum mauris',\n      description:\n        'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue.',\n    },\n    {\n      id: 18,\n      name: 'Antonetta Beilby',\n      street: '669 Sullivan Circle',\n      city: 'Tallahassee',\n      state: 'Florida',\n      zipCode: '32309',\n      clinic: 'commodo vulputate',\n      description: 'Ut at dolor quis odio consequat varius.',\n    },\n    {\n      id: 19,\n      name: 'Emilia Piner',\n      street: '13 Kim Hill',\n      city: 'Dallas',\n      state: 'Texas',\n      zipCode: '75221',\n      clinic: 'nunc rhoncus',\n      description:\n        'Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.',\n    },\n    {\n      id: 20,\n      name: 'Claiborne di Rocca',\n      street: '71 Pearson Street',\n      city: 'Albuquerque',\n      state: 'New Mexico',\n      zipCode: '87140',\n      clinic: 'urna pretium',\n      description:\n        'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.',\n    },\n  ];\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 6
+                "line": 8
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "StoreService",
+            "id": "injectable-StoreService-437b4d2ee4a0312891959ae5221807574976e94a8c4616a508a65cb4f11a62474d83a45bcacc4c1c6540db85da3b63a3980849c89e32a748319f95ddb4297c73",
+            "file": "src/app/core/services/store.service.ts",
+            "properties": [
+                {
+                    "name": "availablePatientId",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "patients",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PatientProfile[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "createPatient",
+                    "args": [
+                        {
+                            "name": "patient",
+                            "type": "PatientProfile",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<PatientProfile[]>",
+                    "typeParameters": [],
+                    "line": 40,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "patient",
+                            "type": "PatientProfile",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "deletePatient",
+                    "args": [
+                        {
+                            "name": "data",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<PatientProfile[]>",
+                    "typeParameters": [],
+                    "line": 65,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "data",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getPatient",
+                    "args": [
+                        {
+                            "name": "action",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<PatientProfile>",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "action",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getPatients",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<PatientProfile[]>",
+                    "typeParameters": [],
+                    "line": 29,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "updatePatient",
+                    "args": [
+                        {
+                            "name": "data",
+                            "type": "PatientProfile",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<PatientProfile[]>",
+                    "typeParameters": [],
+                    "line": 53,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "data",
+                            "type": "PatientProfile",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Observable, of, throwError } from 'rxjs';\nimport { PatientProfile } from '../types/patient';\nimport { PatientService } from './patient.service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class StoreService {\n  private patients: PatientProfile[] = [];\n  private availablePatientId = 0;\n\n  constructor(\n    private patientService: PatientService\n  ) { }\n\n  getPatient(action: { id: number, type: string }): Observable<PatientProfile> {\n    const patient = this.patients.find((patient: PatientProfile) => action.id === patient.id);\n\n    if (patient) {\n      return of({\n        ...patient\n      });\n    } else {\n      return throwError(() => 'Patient not found');\n    }\n  }\n\n  getPatients(): Observable<PatientProfile[]> {\n    this.patients = this.patientService.loadPatients();\n    this.availablePatientId = this.patients.length;\n\n    if (this.patients.length > 0) {\n      return of(this.patients);\n    } else {\n      return throwError(() => 'No Patients found');\n    }\n  }\n\n  createPatient(patient: PatientProfile): Observable<PatientProfile[]> {\n    console.log('createPatient patient: ', patient);\n    const newPatient = {\n      ...patient,\n      id: this.availablePatientId\n    };\n\n    this.availablePatientId++;\n\n    this.patients = this.patients.concat(newPatient);\n    return of(this.patients);\n  }\n\n  updatePatient(data: PatientProfile): Observable<PatientProfile[]> {\n      this.patients = this.patients.map((patient => {\n        if (data.id !== patient.id) return patient;\n        return {\n          ...patient,\n          ...data\n        }\n      }));\n\n      return of(this.patients);\n  }\n\n  deletePatient(data: { id: number, type: string}): Observable<PatientProfile[]> {\n    this.patients = this.patients.filter((patient: PatientProfile) => patient.id !== data.id);\n\n      return of(this.patients);\n    }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "patientService",
+                        "type": "PatientService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "patientService",
+                        "type": "PatientService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "type": "injectable"
         }
     ],
-    "guards": [],
+    "guards": [
+        {
+            "name": "PatientListResolver",
+            "id": "injectable-PatientListResolver-319ce2ad2a8072441fc388027b174c4319ae670b7d7b344a9c0b685f5d495ba505d55893038d53e6adced10dba27a98458c1b2c8e6359f25cba7916ee2b49305",
+            "file": "src/app/views/patient-list/patient-list.resolver.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "resolve",
+                    "args": [
+                        {
+                            "name": "route",
+                            "type": "ActivatedRouteSnapshot",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "state",
+                            "type": "RouterStateSnapshot",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<string>",
+                    "typeParameters": [],
+                    "line": 21,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "route",
+                            "type": "ActivatedRouteSnapshot",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "state",
+                            "type": "RouterStateSnapshot",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport {\n  Resolve,\n  RouterStateSnapshot,\n  ActivatedRouteSnapshot\n} from '@angular/router';\nimport { Observable, of } from 'rxjs';\nimport { select, Store } from '@ngrx/store';\nimport * as fromActions from '../../core/store/patient/patient.actions';\nimport { PatientState } from '../../core/store/patient';\nimport { selectPatients } from '../../core/store/patient/patient.selectors';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class PatientListResolver implements Resolve<string> {\n  constructor(\n    private readonly store: Store<PatientState>\n  ) {}\n\n  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {\n    this.store.dispatch(fromActions.loadPatients());\n    return of('NONE');\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store<PatientState>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 16,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store<PatientState>",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "guard"
+        }
+    ],
     "interceptors": [],
     "classes": [],
     "directives": [],
@@ -274,11 +643,83 @@
                 }
             ],
             "stylesData": "",
-            "templateData": "<router-outlet></router-outlet>\n"
+            "templateData": "<app-header></app-header>\n<router-outlet></router-outlet>\n"
+        },
+        {
+            "name": "HeaderComponent",
+            "id": "component-HeaderComponent-55c6621aba0e1f772861433ba5b4b7733559a3480ada45ebfa5971bf8d3cc6be8e218bef13ad3a9f7975aee0e954d685baaf546b381acb2b8c78c2b63103bec7",
+            "file": "src/app/shared/header/header.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-header",
+            "styleUrls": [
+                "./header.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./header.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "loadNewProfile",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 13,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { Router, NavigationEnd } from '@angular/router';\nimport { filter } from 'rxjs/operators';\n\n@Component({\n  selector: 'app-header',\n  templateUrl: './header.component.html',\n  styleUrls: ['./header.component.scss']\n})\nexport class HeaderComponent implements OnInit {\n  constructor() {}\n\n  ngOnInit(): void {\n  }\n\n  loadNewProfile(): void {\n    console.log('loadNewProfile was called');\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".header-spacer {\r\n  flex: 1 1 auto;\r\n}\r\n\r\n.mat-icon {\r\n  font-size: 40px;\r\n  width: 40px;\r\n  height: 40px;\r\n  vertical-align: bottom;\r\n}\r\n",
+                    "styleUrl": "./header.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 10
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<mat-toolbar color=\"primary\" class=\"mat-elevation-z6\">\n  <span><mat-icon>group</mat-icon> Patients</span>\n  <span class=\"header-spacer\"></span>\n  <button mat-raised-button (click)=\"loadNewProfile()\">\n    Create Patient\n  </button>\n</mat-toolbar>\n"
         },
         {
             "name": "PatientCardComponent",
-            "id": "component-PatientCardComponent-dec8dcf72c89c63f270d04c21bc3c5eb1f682c6e3dffdbbc79b84caa6fdd4c0814b22e6c0cdcd61d747db961af735f2292f999f83de7fe1a4b6f746339697d42",
+            "id": "component-PatientCardComponent-8f569cdc5f1f79946a2121fee859a0cfe0d381e7ee345a1b48359d5786253e4b43f092c5413949c21b5da43c17d9f51c0bb9a11c9b7f0fc849af938ad9e9b763",
             "file": "src/app/core/components/patient-card/patient-card.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -300,7 +741,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 14,
+                    "line": 11,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -308,7 +749,7 @@
                     "name": "patientProfile",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 13,
+                    "line": 10,
                     "type": "PatientProfile",
                     "decorators": []
                 }
@@ -322,7 +763,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 29,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -332,7 +773,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -344,11 +785,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { PatientProfile } from '../../types/patient';\n\n\n\n\n@Component({\n  selector: 'app-patient-card',\n  templateUrl: './patient-card.component.html',\n  styleUrls: ['./patient-card.component.scss']\n})\nexport class PatientCardComponent implements OnInit {\n  @Input() public patientProfile: PatientProfile;\n  @Input() public isFullProfile = true;\n\n  constructor() {\n    this.patientProfile = {\n      id: 0,\n      name: '',\n      address: {\n        street: '',\n        city: '',\n        state: '',\n        zipCode: ''\n      },\n      clinic: '',\n      description: ''\n    }\n  }\n\n  ngOnInit(): void {\n  }\n\n  loadProfile(): void {\n    console.log('loadProfile called id: ', this.patientProfile.id);\n  }\n}\n",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { PatientProfile } from '../../types/patient';\n\n@Component({\n  selector: 'app-patient-card',\n  templateUrl: './patient-card.component.html',\n  styleUrls: ['./patient-card.component.scss'],\n})\nexport class PatientCardComponent implements OnInit {\n  @Input() public patientProfile: PatientProfile;\n  @Input() public isFullProfile = true;\n\n  \n  constructor() {\n    this.patientProfile = {\n      id: 0,\n      name: '',\n      street: '',\n      city: '',\n      state: '',\n      zipCode: '',\n      clinic: '',\n      description: '',\n    };\n  }\n\n  ngOnInit(): void {}\n\n  loadProfile(): void {\n    console.log('loadProfile called id: ', this.patientProfile.id);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "\r\n.patient-card {\r\n  max-width: 400px;\r\n\r\n  .mat-card-title {\r\n    margin-bottom: 0;\r\n    display: inline-flex;\r\n    line-height: 1.3;\r\n\r\n    .mat-icon {\r\n      margin-right: 5px;\r\n    }\r\n  }\r\n\r\n  .mat-card-content {\r\n    display: block;\r\n    margin-bottom: 16px;\r\n    margin-top: 10px;\r\n    border-top: 1px solid lightgray;\r\n    padding-top: 20px;\r\n\r\n    .patient-card-label {\r\n      font-weight: bold;\r\n    }\r\n\r\n    .patient-card-address {\r\n      margin-bottom: 5px;\r\n\r\n      div {\r\n        .street {\r\n          padding: 0 16px 0 0 !important;\r\n        }\r\n      }\r\n    }\r\n\r\n    .patient-card-description {\r\n      margin-top: 5px;\r\n    }\r\n  }\r\n}\r\n\r\n::ng-deep .mat-card-header-text {\r\n  margin: 0 16px 0 0 !important;\r\n}\r\n",
+                    "data": "\r\n.patient-card {\r\n  max-width: 400px;\r\n\r\n  .mat-card-title {\r\n    margin-bottom: 0;\r\n    display: inline-flex;\r\n    line-height: 1.3;\r\n\r\n    &:hover {\r\n      color:darkgray;\r\n      cursor: pointer;\r\n    }\r\n\r\n    .mat-icon {\r\n      margin-right: 5px;\r\n    }\r\n  }\r\n\r\n  .mat-card-content {\r\n    display: block;\r\n    margin-bottom: 16px;\r\n    margin-top: 10px;\r\n    border-top: 1px solid lightgray;\r\n    padding-top: 20px;\r\n\r\n    .patient-card-label {\r\n      font-weight: bold;\r\n    }\r\n\r\n    .patient-card-address {\r\n      margin-bottom: 5px;\r\n\r\n      div {\r\n        .street {\r\n          padding: 0 16px 0 0 !important;\r\n        }\r\n      }\r\n    }\r\n\r\n    .patient-card-description {\r\n      margin-top: 5px;\r\n    }\r\n  }\r\n}\r\n\r\n::ng-deep .mat-card-header-text {\r\n  margin: 0 16px 0 0 !important;\r\n}\r\n",
                     "styleUrl": "./patient-card.component.scss"
                 }
             ],
@@ -359,16 +800,16 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 14
+                "line": 11
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<mat-card class=\"patient-card\">\n  <mat-card-header>\n    <mat-card-title (click)=\"loadProfile()\"><mat-icon>account_circle</mat-icon>{{patientProfile.name}}</mat-card-title>\n  </mat-card-header>\n  <mat-card-content>\n    <div fxLayout=\"row\" class=\"patient-card-address\">\n      <mat-label class=\"patient-card-label\" fxFlex=\"50%\" fxFlex.xs=\"100%\" fxFlex.sm=\"33%\" fxLayoutGap=\"16px grid\">Address: </mat-label>\n      <div fxFlex=\"50%\" fxLayoutGap=\"16px grid\">\n        <div class=\"street\">{{patientProfile.address.street}}</div>\n        <div class=\"city-state-zip\">{{patientProfile.address.city}}, {{patientProfile.address.state}} {{patientProfile.address.zipCode}}</div>\n      </div>\n    </div>\n    <div fxLayout=\"row\" class=\"patient-card-clinic\">\n      <mat-label class=\"patient-card-label\" fxFlex=\"50%\" fxFlex.xs=\"100%\" fxFlex.sm=\"33%\" fxLayoutGap=\"16px grid\">Associated Clinic: </mat-label>\n      <div class=\"clinic\">{{patientProfile.clinic}}</div>\n    </div>\n    <div fxLayout=\"row\" class=\"patient-card-description\" *ngIf=\"isFullProfile\">\n      <mat-label class=\"patient-card-label\" fxFlex=\"50%\" fxFlex.xs=\"100%\" fxFlex.sm=\"33%\" fxLayoutGap=\"16px grid\">Description: </mat-label>\n      <div fxFlex=\"50%\" fxLayoutGap=\"16px grid\">\n        {{patientProfile.description}}\n      </div>\n    </div>\n  </mat-card-content>\n</mat-card>\n"
+            "templateData": "<mat-card class=\"patient-card\">\n  <mat-card-header>\n    <mat-card-title (click)=\"loadProfile()\"><mat-icon>account_circle</mat-icon>{{patientProfile.name}}</mat-card-title>\n  </mat-card-header>\n  <mat-card-content>\n    <div fxLayout=\"row\" class=\"patient-card-address\">\n      <mat-label class=\"patient-card-label\" fxFlex=\"50%\" fxFlex.xs=\"100%\" fxFlex.sm=\"33%\" fxLayoutGap=\"16px grid\">Address: </mat-label>\n      <div fxFlex=\"50%\" fxLayoutGap=\"16px grid\">\n        <div class=\"street\">{{patientProfile.street}}</div>\n        <div class=\"city-state-zip\">{{patientProfile.city}}, {{patientProfile.state}} {{patientProfile.zipCode}}</div>\n      </div>\n    </div>\n    <div fxLayout=\"row\" class=\"patient-card-clinic\">\n      <mat-label class=\"patient-card-label\" fxFlex=\"50%\" fxFlex.xs=\"100%\" fxFlex.sm=\"33%\" fxLayoutGap=\"16px grid\">Associated Clinic: </mat-label>\n      <div class=\"clinic\">{{patientProfile.clinic}}</div>\n    </div>\n    <div fxLayout=\"row\" class=\"patient-card-description\" *ngIf=\"isFullProfile\">\n      <mat-label class=\"patient-card-label\" fxFlex=\"50%\" fxFlex.xs=\"100%\" fxFlex.sm=\"33%\" fxLayoutGap=\"16px grid\">Description: </mat-label>\n      <div fxFlex=\"50%\" fxLayoutGap=\"16px grid\">\n        {{patientProfile.description}}\n      </div>\n    </div>\n  </mat-card-content>\n</mat-card>\n"
         },
         {
             "name": "PatientFormComponent",
-            "id": "component-PatientFormComponent-f7e0d798ee48299b3b1f14e641d72af8ad6a3e84068089b92d240092d55d73ae5e227376681b6d2baea597fd3240f9fd1dd44bab4538e358e82e59a700d16d2e",
+            "id": "component-PatientFormComponent-b530a3bd2439f9fac139c5e479c8768efb22eee760b7c8b74a17be625b49957358975dd802ef511138930ee2836c0f15804517a40908059e401df0626176d226",
             "file": "src/app/core/components/forms/patient-form/patient-form.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -386,6 +827,15 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "isNew",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
                     "name": "patientProfile",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -400,23 +850,23 @@
                     "name": "controlsConfig",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "PatientProfileFlat",
+                    "type": "PatientProfile",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 14,
                     "modifierKind": [
                         123
                     ]
                 },
                 {
                     "name": "createUpdate",
-                    "defaultValue": "'Create'",
+                    "defaultValue": "this.isNew ? 'Create' : 'Update'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 16,
                     "modifierKind": [
                         123
                     ]
@@ -428,7 +878,7 @@
                     "type": "FormGroup",
                     "optional": false,
                     "description": "",
-                    "line": 14,
+                    "line": 15,
                     "modifierKind": [
                         123
                     ]
@@ -441,7 +891,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 56,
+                    "line": 53,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -451,7 +901,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 78,
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -461,7 +911,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 72,
+                    "line": 69,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -473,7 +923,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { FormBuilder, FormGroup, Validators } from '@angular/forms';\nimport { PatientProfile, PatientProfileFlat } from 'src/app/core/types/patient';\n\n@Component({\n  selector: 'app-patient-form',\n  templateUrl: './patient-form.component.html',\n  styleUrls: ['./patient-form.component.scss']\n})\nexport class PatientFormComponent implements OnInit {\n  @Input() public patientProfile: PatientProfile;\n\n  public controlsConfig: PatientProfileFlat;\n  public registerForm: FormGroup;\n  public createUpdate: string = 'Create';\n\n  constructor(\n    private formBuilder: FormBuilder,\n  ) {\n    this.registerForm = this.formBuilder.group({\n      id: [''],\n      name: ['', Validators.required],\n      street: [''],\n      city: [''],\n      state: [''],\n      zipCode: [''],\n      clinic: [''],\n      description: ['']\n    });\n\n    this.controlsConfig = {\n      id: null,\n      name: '',\n      street: '',\n      city: '',\n      state: '',\n      zipCode: '',\n      clinic: '',\n      description: ''\n    };\n\n    this.patientProfile = {\n      id: null,\n      name: '',\n      address: {\n        street: '',\n        city: '',\n        state: '',\n        zipCode: ''\n      },\n      clinic: '',\n      description: ''\n    };\n  }\n\n  ngOnInit(): void {\n    this.controlsConfig = {\n      id: this.patientProfile.id,\n      name: this.patientProfile.name,\n      street: this.patientProfile.address.street,\n      city: this.patientProfile.address.city,\n      state: this.patientProfile.address.state,\n      zipCode: this.patientProfile.address.zipCode,\n      clinic: this.patientProfile.clinic,\n      description: this.patientProfile.description\n    };\n    console.log('this.patientProfile: ', this.patientProfile);\n    console.log('this.controlsConfig: ', this.controlsConfig);\n    this.registerForm.reset(this.controlsConfig);\n  }\n\n  onSubmit(): void {\n    if (this.registerForm.invalid) {\n      return;\n    }\n  }\n\n  onCancel(): void {\n\n  }\n\n  get f() { return this.registerForm && this.registerForm.controls; }\n}\n",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { FormBuilder, FormGroup, Validators } from '@angular/forms';\nimport { PatientProfile } from 'src/app/core/types/patient';\n\n@Component({\n  selector: 'app-patient-form',\n  templateUrl: './patient-form.component.html',\n  styleUrls: ['./patient-form.component.scss'],\n})\nexport class PatientFormComponent implements OnInit {\n  @Input() public patientProfile: PatientProfile;\n  @Input() public isNew: boolean = false;\n\n  public controlsConfig: PatientProfile;\n  public registerForm: FormGroup;\n  public createUpdate: string = this.isNew ? 'Create' : 'Update';\n\n  constructor(private formBuilder: FormBuilder) {\n    this.registerForm = this.formBuilder.group({\n      id: [''],\n      name: ['', Validators.required],\n      street: ['', Validators.required],\n      city: ['', Validators.required],\n      state: ['', Validators.required],\n      zipCode: ['', Validators.required],\n      clinic: [''],\n      description: [''],\n    });\n\n    this.controlsConfig = {\n      id: null,\n      name: '',\n      street: '',\n      city: '',\n      state: '',\n      zipCode: '',\n      clinic: '',\n      description: '',\n    };\n\n    this.patientProfile = {\n      id: null,\n      name: '',\n      street: '',\n      city: '',\n      state: '',\n      zipCode: '',\n      clinic: '',\n      description: '',\n    };\n  }\n\n  ngOnInit(): void {\n    this.controlsConfig = {\n      id: this.patientProfile.id,\n      name: this.patientProfile.name,\n      street: this.patientProfile.street,\n      city: this.patientProfile.city,\n      state: this.patientProfile.state,\n      zipCode: this.patientProfile.zipCode,\n      clinic: this.patientProfile.clinic,\n      description: this.patientProfile.description,\n    };\n    console.log('this.patientProfile: ', this.patientProfile);\n    console.log('this.controlsConfig: ', this.controlsConfig);\n    this.registerForm.reset(this.controlsConfig);\n  }\n\n  onSubmit(): void {\n    if (this.registerForm.invalid) {\n      return;\n    }\n  }\n\n  onCancel(): void {}\n\n  get f() {\n    return this.registerForm && this.registerForm.controls;\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -495,7 +945,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 15,
+                "line": 16,
                 "jsdoctags": [
                     {
                         "name": "formBuilder",
@@ -518,7 +968,7 @@
                         "name": "f",
                         "type": "",
                         "returnType": "",
-                        "line": 82
+                        "line": 77
                     }
                 }
             },
@@ -526,7 +976,7 @@
         },
         {
             "name": "PatientListComponent",
-            "id": "component-PatientListComponent-fe206618730db3255d2732f23c47a9515eda0d306fb5da2a10a7eb62d8091bbc0b0ef412d6335ec8673d814fb2b8c9803f023ed47e968efc1bcbbb622574e356",
+            "id": "component-PatientListComponent-e50f5eb40f18814d2cd9c12fe49d779e235455509b60159ce791f358217ae467be3fe575c87700cac6be08ca837323ef2ca7c501af97f48453de252ed463dcbc",
             "file": "src/app/views/patient-list/patient-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -544,7 +994,21 @@
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "patientList",
+                    "defaultValue": "this.store.pipe(select(patientSelectors.selectPatients))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "ngOnInit",
@@ -552,7 +1016,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 12,
+                    "line": 19,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -564,7 +1028,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-patient-list',\n  templateUrl: './patient-list.component.html',\n  styleUrls: ['./patient-list.component.scss']\n})\nexport class PatientListComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { select, Store } from '@ngrx/store';\nimport { PatientProfile } from '../../core/types/patient';\nimport * as patientSelectors from '../../core/store/patient/patient.selectors';\n\n@Component({\n  selector: 'app-patient-list',\n  templateUrl: './patient-list.component.html',\n  styleUrls: ['./patient-list.component.scss']\n})\nexport class PatientListComponent implements OnInit {\n  public patientList = this.store.pipe(select(patientSelectors.selectPatients));\n\n  constructor(\n    private store: Store<PatientProfile>\n  ) {\n  }\n\n  ngOnInit(): void {\n\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -578,25 +1042,43 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 8
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store<PatientProfile>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 12,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store<PatientProfile>",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"container\">\n  <div class=\"patient-list\" fxLayout=\"row wrap\" fxLayoutGap=\"16px grid\">\n    <div fxFlex=\"25\" fxFlex.xs=\"100\" fxFlex.sm=\"50\" *ngFor=\"let num of [1,2,3,4,5,6,7,8]\">\n      <app-patient-card></app-patient-card>\n    </div>\n  </div>\n</div>\n"
+            "templateData": "<mat-card>\n  <mat-card-content>\n    <div class=\"container\">\n      <div class=\"patient-list\" fxLayout=\"row wrap\" fxLayoutGap=\"16px grid\">\n        <div fxFlex=\"25\" fxFlex.xs=\"100\" fxFlex.sm=\"50\" *ngFor=\"let patient of patientList | async\">\n          <app-patient-card [patientProfile]=\"patient\" [isFullProfile]=\"false\"></app-patient-card>\n        </div>\n      </div>\n    </div>\n  </mat-card-content>\n</mat-card>\n"
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-2f7196c1679dd45eb2e85eccd82d982c4e89d0fc8fbbd3c3f3cb44b71d285a913fce2d1cb1944ca92c82aa80035b4cc1866e7867b2793c565a01ac584b345ce4",
+            "id": "module-AppModule-61600bf0ace3a6b00f02a15dfba65d63efe126f9f78c7a456f6424fb1ef243315e14a65bfd29ae37aa12624133387a4369b017a8ec75b9156ad9fcedc9ce44c4",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\n\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\n\nimport { CoreModule } from './core/core.module';\nimport { FeaturesModule } from './features/features.module';\nimport { SharedModule } from './shared/shared.module';\nimport { ViewsModule } from './views/views.module';\nimport { MaterialsModule } from './core/materials/materials.module';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\n\nimport { FlexLayoutModule } from '@angular/flex-layout';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreRouterConnectingModule } from '@ngrx/router-store';\n\n@NgModule({\n  declarations: [\n    AppComponent\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    CoreModule,\n    FeaturesModule,\n    SharedModule,\n    ViewsModule,\n    BrowserAnimationsModule,\n    FlexLayoutModule,\n    MaterialsModule,\n    StoreModule.forRoot({}, {}),\n    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),\n    EffectsModule.forRoot([]),\n    StoreRouterConnectingModule.forRoot()\n  ],\n  providers: [],\n  bootstrap: [AppComponent]\n})\nexport class AppModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\n\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\n\nimport { CoreModule } from './core/core.module';\nimport { FeaturesModule } from './features/features.module';\nimport { SharedModule } from './shared/shared.module';\nimport { ViewsModule } from './views/views.module';\nimport { MaterialsModule } from './core/materials/materials.module';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\n\nimport { FlexLayoutModule } from '@angular/flex-layout';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { metaReducers, reducers } from './core/store/reducers';\nimport { patientStateFeatureKey } from './core/store/patient';\n\n@NgModule({\n  declarations: [\n    AppComponent\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    CoreModule,\n    FeaturesModule,\n    SharedModule,\n    ViewsModule,\n    BrowserAnimationsModule,\n    FlexLayoutModule,\n    MaterialsModule,\n    StoreModule.forRoot(reducers, {\n      metaReducers,\n      runtimeChecks: {\n        strictStateImmutability: true,\n        strictActionImmutability: true\n      }\n    }),\n    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),\n    EffectsModule.forRoot([]),\n  ],\n  providers: [],\n  bootstrap: [AppComponent]\n})\nexport class AppModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -653,13 +1135,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-4bc6d82741e0b53e6150e5517ca2eea2b0085b29c9e6be9c83441e72486331a37359d7b40bb16abb493efe827ab0dfd5f349028d494f311e25ad9e4d1c8e4c72",
+            "id": "module-AppRoutingModule-0e0c26a072dc769b8eb53fba3201b4c4a958f66356dcef50e11edf7ebc325fd7f1ff8d1b94db5a1bf3ffed13b19a6bf7f159f72a6cc1548fc4b6e0fe0176fe9f",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { PatientListComponent } from './views/patient-list/patient-list.component';\n\nconst routes: Routes = [\n  {\n    path: '',\n    component: PatientListComponent\n  }\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { PatientListComponent } from './views/patient-list/patient-list.component';\nimport { PatientListResolver } from './views/patient-list/patient-list.resolver';\n\nconst routes: Routes = [\n  {\n    path: '',\n    component: PatientListComponent,\n    resolve: {\n      patients: PatientListResolver\n    }\n  }\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -812,13 +1294,13 @@
         },
         {
             "name": "SharedModule",
-            "id": "module-SharedModule-183ede447108eea17d98ca2ab008f39499b128ca0894b75a50655364fb41afe822dfad5c8cf2731faa39ac4dcfaf5c3b954b9786de22296de915fd9a3a41c3ec",
+            "id": "module-SharedModule-ee349b42cb4b8aeaaf82e8a45f0b73b70faf92b2a87b49964d2f7b38b905d18322d91b1b06ea19aef2a32fbcae13c1ffc693119b105ab2ab4b21ac75397df9ad",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/shared/shared.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n\n\n@NgModule({\n  declarations: [],\n  imports: [\n    CommonModule\n  ]\n})\nexport class SharedModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { HeaderComponent } from './header/header.component';\nimport { MaterialsModule } from '../core/materials/materials.module';\n\n@NgModule({\n  declarations: [\n    HeaderComponent\n  ],\n  imports: [\n    CommonModule,\n    MaterialsModule\n  ],\n  exports: [\n    HeaderComponent\n  ]\n})\nexport class SharedModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -826,15 +1308,27 @@
                 },
                 {
                     "type": "declarations",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "HeaderComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "imports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "MaterialsModule"
+                        }
+                    ]
                 },
                 {
                     "type": "exports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "HeaderComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "bootstrap",
@@ -848,13 +1342,13 @@
         },
         {
             "name": "ViewsModule",
-            "id": "module-ViewsModule-29cc2b2ecaba173a80424efece24c77670e6fa1cc131595605434de29ac6d7c2ab6d4b5f13e90afd44b63dd9d1541fe6249f99a95ff33a6e4ab94904960a8f74",
+            "id": "module-ViewsModule-5ba3b65b9e6c43da958ac7425a839e9581f0823c788007be065310236a20298e4703860295ea6df7b8789df43d0b439194066a2c778300f9a54265d68478e0a9",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/views/views.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { PatientListComponent } from './patient-list/patient-list.component';\nimport { MaterialsModule } from '../core/materials/materials.module';\nimport { CoreModule } from '../core/core.module';\nimport { FlexLayoutModule } from '@angular/flex-layout';\n\n@NgModule({\n  declarations: [\n    PatientListComponent\n  ],\n  imports: [\n    CommonModule,\n    MaterialsModule,\n    CoreModule,\n    FlexLayoutModule\n  ]\n})\nexport class ViewsModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { PatientListComponent } from './patient-list/patient-list.component';\nimport { MaterialsModule } from '../core/materials/materials.module';\nimport { CoreModule } from '../core/core.module';\nimport { FlexLayoutModule } from '@angular/flex-layout';\nimport { StoreModule } from '@ngrx/store';\nimport { PatientEffects } from '../core/store/patient/patient.effects';\nimport { EffectsModule } from '@ngrx/effects';\nimport * as fromPatientState from '../core/store/patient/index';\n\n@NgModule({\n  declarations: [\n    PatientListComponent\n  ],\n  imports: [\n    CommonModule,\n    MaterialsModule,\n    CoreModule,\n    FlexLayoutModule,\n    StoreModule.forFeature(\n      fromPatientState.patientStateFeatureKey,\n      fromPatientState.reducers,\n      { metaReducers: fromPatientState.metaReducers }\n    ),\n    EffectsModule.forFeature([PatientEffects]),\n  ]\n})\nexport class ViewsModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -907,6 +1401,76 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
+                "name": "controlsConfig",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/components/forms/patient-form/patient-form.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  id: 1,\r\n  name: 'John Doe',\r\n  street: '32568 Willets Street',\r\n  city: 'Santa Barbara',\r\n  state: 'CA',\r\n  zipCode: '94687',\r\n  clinic: 'Health Clinic of America',\r\n  description:\r\n    'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.',\r\n}"
+            },
+            {
+                "name": "createPatient",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.CREATE_PATIENT,\r\n  props<{ patient: PatientProfile }>()\r\n)"
+            },
+            {
+                "name": "createPatientFailure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.CREATE_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+            },
+            {
+                "name": "createPatientSuccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.CREATE_PATIENT_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
+            },
+            {
+                "name": "deletePatient",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.DELETE_PATIENT,\r\n  props<{ id: number }>()\r\n)"
+            },
+            {
+                "name": "deletePatientFailure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.DELETE_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+            },
+            {
+                "name": "deletePatientSuccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.DELETE_PATIENT_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
+            },
+            {
                 "name": "EditProfile",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -947,6 +1511,96 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "initialState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/index.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "PatientState",
+                "defaultValue": "{\r\n  patients: [],\r\n  patient: {\r\n    id: null,\r\n    name: '',\r\n    street: '',\r\n    city: '',\r\n    state: '',\r\n    zipCode: '',\r\n    clinic: '',\r\n    description: '',\r\n  },\r\n  error: undefined\r\n}"
+            },
+            {
+                "name": "loadPatient",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENT,\r\n  props<{ id: number }>()\r\n)"
+            },
+            {
+                "name": "loadPatientFailure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+            },
+            {
+                "name": "loadPatients",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENTS\r\n)"
+            },
+            {
+                "name": "loadPatientsFailure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENTS_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+            },
+            {
+                "name": "loadPatientsSuccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENTS_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
+            },
+            {
+                "name": "loadPatientSuccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENT_SUCCESS,\r\n  props<{ patient: PatientProfile }>()\r\n)"
+            },
+            {
+                "name": "metaReducers",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/index.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "MetaReducer[]",
+                "defaultValue": "!environment.production ? [] : []"
+            },
+            {
+                "name": "metaReducers",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/reducers/index.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "MetaReducer[]",
+                "defaultValue": "!environment.production\r\n    ? []\r\n    : []"
+            },
+            {
                 "name": "NewProfile",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -964,7 +1618,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\r\n  id: 1,\r\n  name: 'John Doe',\r\n  address: {\r\n    street: '32568 Willets Street',\r\n    city: 'Santa Barbara',\r\n    state: 'CA',\r\n    zipCode: 94687\r\n  },\r\n  clinic: 'Health Clinic of America',\r\n  description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'\r\n}"
+                "defaultValue": "{\r\n  id: 1,\r\n  name: 'John Doe',\r\n  street: '32568 Willets Street',\r\n  city: 'Santa Barbara',\r\n  state: 'CA',\r\n  zipCode: 94687,\r\n  clinic: 'Health Clinic of America',\r\n  description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'\r\n}"
             },
             {
                 "name": "patientProfile",
@@ -974,7 +1628,57 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "PatientProfile",
-                "defaultValue": "{\r\n  id: null,\r\n  name: '',\r\n  address: {\r\n    street: '',\r\n    city: '',\r\n    state: '',\r\n    zipCode: ''\r\n  },\r\n  clinic: '',\r\n  description: ''\r\n}"
+                "defaultValue": "{\r\n  id: null,\r\n  name: '',\r\n  street: '',\r\n  city: '',\r\n  state: '',\r\n  zipCode: '',\r\n  clinic: '',\r\n  description: '',\r\n}"
+            },
+            {
+                "name": "patientStateFeatureKey",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/index.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "string",
+                "defaultValue": "'patientState'"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/shared/header/header.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "reducers",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/index.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer(\r\n  initialState,\r\n  // on(fromPatientActions.loadPatients, (state: PatientState, action) => {\r\n  //   console.log('reducers loadPatients action: ', action);\r\n  //   console.log('reducers loadPatients state: ', state);\r\n  //   return {\r\n  //     ...state,\r\n  //     //patients: action.patients\r\n  //   }\r\n  // }),\r\n  on(fromPatientActions.loadPatientSuccess, (state: PatientState, action) => {\r\n    console.log('loadPatientSuccess state: ', state);\r\n    console.log('loadPatientSuccess action: ', action);\r\n    return {\r\n      ...state,\r\n      patient: action.patient\r\n    }\r\n  }),\r\n  on(fromPatientActions.loadPatientsSuccess, (state: PatientState, action) => {\r\n    console.log('loadPatientsSuccess state: ', state);\r\n    console.log('loadPatientsSuccess action: ', action);\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.loadPatientsFailure, (state, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.createPatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.createPatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.updatePatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.updatePatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.deletePatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.deletePatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  })\r\n)"
+            },
+            {
+                "name": "reducers",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/reducers/index.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "ActionReducerMap<AppState>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "registerForm",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/components/forms/patient-form/patient-form.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  ...controlsConfig,\r\n}"
             },
             {
                 "name": "require",
@@ -984,6 +1688,46 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
+            },
+            {
+                "name": "routerMock",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/shared/header/header.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  events: () => {},\r\n  navigate: () => {},\r\n}"
+            },
+            {
+                "name": "selectPatient",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\r\n  selectPatientFeature,\r\n  (state: PatientState) => state.patient\r\n)"
+            },
+            {
+                "name": "selectPatientFeature",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createFeatureSelector<PatientState>(\r\n  patientStateFeatureKey\r\n)"
+            },
+            {
+                "name": "selectPatients",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\r\n  selectPatientFeature,\r\n  (state: PatientState) => state.patients\r\n)"
             },
             {
                 "name": "SummaryProfile",
@@ -999,6 +1743,16 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/app/shared/header/header.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/app/core/components/patient-card/patient-card.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -1014,11 +1768,143 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "updatePatient",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.UPDATE_PATIENT,\r\n  props<{ patient: PatientProfile }>()\r\n)"
+            },
+            {
+                "name": "updatePatientFailure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.UPDATE_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+            },
+            {
+                "name": "updatePatientSuccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/store/patient/patient.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\r\n  PatientActionTypes.UPDATE_PATIENT_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
             }
         ],
         "functions": [],
         "typealiases": [],
-        "enumerations": [],
+        "enumerations": [
+            {
+                "name": "PatientActionTypes",
+                "childs": [
+                    {
+                        "name": "LOAD_PATIENTS",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient List Component] Load Patients"
+                    },
+                    {
+                        "name": "LOAD_PATIENTS_SUCCESS",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Effect] Load Patients Success"
+                    },
+                    {
+                        "name": "LOAD_PATIENTS_FAILURE",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Effect] Load Patients Failure"
+                    },
+                    {
+                        "name": "LOAD_PATIENT",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient List Component] Load Patient"
+                    },
+                    {
+                        "name": "LOAD_PATIENT_SUCCESS",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Effect] Load Patient Success"
+                    },
+                    {
+                        "name": "LOAD_PATIENT_FAILURE",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Effect] Load Patient Failure"
+                    },
+                    {
+                        "name": "CREATE_PATIENT",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Create] Create Patient"
+                    },
+                    {
+                        "name": "CREATE_PATIENT_SUCCESS",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Create Success] Create Patient Success"
+                    },
+                    {
+                        "name": "CREATE_PATIENT_FAILURE",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Create Failure] Create Patient Failure"
+                    },
+                    {
+                        "name": "UPDATE_PATIENT",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Update] Update Patient"
+                    },
+                    {
+                        "name": "UPDATE_PATIENT_SUCCESS",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Update Success] Update Patient Success"
+                    },
+                    {
+                        "name": "UPDATE_PATIENT_FAILURE",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Update Failure] Update Patient Failure"
+                    },
+                    {
+                        "name": "DELETE_PATIENT",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Delete] Delete Patient"
+                    },
+                    {
+                        "name": "DELETE_PATIENT_SUCCESS",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Delete Success] Delete Patient Success"
+                    },
+                    {
+                        "name": "DELETE_PATIENT_FAILURE",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "[Patient Delete Failure] Delete Patient Failure"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "file": "src/app/core/store/patient/patient.actions.ts"
+            }
+        ],
         "groupedVariables": {
             "src/test.ts": [
                 {
@@ -1042,6 +1928,16 @@
                 }
             ],
             "src/app/core/components/forms/patient-form/patient-form.component.stories.ts": [
+                {
+                    "name": "controlsConfig",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/components/forms/patient-form/patient-form.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  id: 1,\r\n  name: 'John Doe',\r\n  street: '32568 Willets Street',\r\n  city: 'Santa Barbara',\r\n  state: 'CA',\r\n  zipCode: '94687',\r\n  clinic: 'Health Clinic of America',\r\n  description:\r\n    'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.',\r\n}"
+                },
                 {
                     "name": "EditProfile",
                     "ctype": "miscellaneous",
@@ -1070,7 +1966,17 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "PatientProfile",
-                    "defaultValue": "{\r\n  id: null,\r\n  name: '',\r\n  address: {\r\n    street: '',\r\n    city: '',\r\n    state: '',\r\n    zipCode: ''\r\n  },\r\n  clinic: '',\r\n  description: ''\r\n}"
+                    "defaultValue": "{\r\n  id: null,\r\n  name: '',\r\n  street: '',\r\n  city: '',\r\n  state: '',\r\n  zipCode: '',\r\n  clinic: '',\r\n  description: '',\r\n}"
+                },
+                {
+                    "name": "registerForm",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/components/forms/patient-form/patient-form.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  ...controlsConfig,\r\n}"
                 },
                 {
                     "name": "Template",
@@ -1081,6 +1987,158 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/app/core/store/patient/patient.actions.ts": [
+                {
+                    "name": "createPatient",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.CREATE_PATIENT,\r\n  props<{ patient: PatientProfile }>()\r\n)"
+                },
+                {
+                    "name": "createPatientFailure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.CREATE_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+                },
+                {
+                    "name": "createPatientSuccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.CREATE_PATIENT_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
+                },
+                {
+                    "name": "deletePatient",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.DELETE_PATIENT,\r\n  props<{ id: number }>()\r\n)"
+                },
+                {
+                    "name": "deletePatientFailure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.DELETE_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+                },
+                {
+                    "name": "deletePatientSuccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.DELETE_PATIENT_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
+                },
+                {
+                    "name": "loadPatient",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENT,\r\n  props<{ id: number }>()\r\n)"
+                },
+                {
+                    "name": "loadPatientFailure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+                },
+                {
+                    "name": "loadPatients",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENTS\r\n)"
+                },
+                {
+                    "name": "loadPatientsFailure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENTS_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+                },
+                {
+                    "name": "loadPatientsSuccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENTS_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
+                },
+                {
+                    "name": "loadPatientSuccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.LOAD_PATIENT_SUCCESS,\r\n  props<{ patient: PatientProfile }>()\r\n)"
+                },
+                {
+                    "name": "updatePatient",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.UPDATE_PATIENT,\r\n  props<{ patient: PatientProfile }>()\r\n)"
+                },
+                {
+                    "name": "updatePatientFailure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.UPDATE_PATIENT_FAILURE,\r\n  props<{ error: any }>()\r\n)"
+                },
+                {
+                    "name": "updatePatientSuccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\r\n  PatientActionTypes.UPDATE_PATIENT_SUCCESS,\r\n  props<{ patients: PatientProfile[] }>()\r\n)"
                 }
             ],
             "src/environments/environment.prod.ts": [
@@ -1126,7 +2184,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\r\n  id: 1,\r\n  name: 'John Doe',\r\n  address: {\r\n    street: '32568 Willets Street',\r\n    city: 'Santa Barbara',\r\n    state: 'CA',\r\n    zipCode: 94687\r\n  },\r\n  clinic: 'Health Clinic of America',\r\n  description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'\r\n}"
+                    "defaultValue": "{\r\n  id: 1,\r\n  name: 'John Doe',\r\n  street: '32568 Willets Street',\r\n  city: 'Santa Barbara',\r\n  state: 'CA',\r\n  zipCode: 94687,\r\n  clinic: 'Health Clinic of America',\r\n  description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'\r\n}"
                 },
                 {
                     "name": "SummaryProfile",
@@ -1148,10 +2206,242 @@
                     "type": "Story",
                     "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
                 }
+            ],
+            "src/app/core/store/patient/index.ts": [
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PatientState",
+                    "defaultValue": "{\r\n  patients: [],\r\n  patient: {\r\n    id: null,\r\n    name: '',\r\n    street: '',\r\n    city: '',\r\n    state: '',\r\n    zipCode: '',\r\n    clinic: '',\r\n    description: '',\r\n  },\r\n  error: undefined\r\n}"
+                },
+                {
+                    "name": "metaReducers",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MetaReducer[]",
+                    "defaultValue": "!environment.production ? [] : []"
+                },
+                {
+                    "name": "patientStateFeatureKey",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "defaultValue": "'patientState'"
+                },
+                {
+                    "name": "reducers",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer(\r\n  initialState,\r\n  // on(fromPatientActions.loadPatients, (state: PatientState, action) => {\r\n  //   console.log('reducers loadPatients action: ', action);\r\n  //   console.log('reducers loadPatients state: ', state);\r\n  //   return {\r\n  //     ...state,\r\n  //     //patients: action.patients\r\n  //   }\r\n  // }),\r\n  on(fromPatientActions.loadPatientSuccess, (state: PatientState, action) => {\r\n    console.log('loadPatientSuccess state: ', state);\r\n    console.log('loadPatientSuccess action: ', action);\r\n    return {\r\n      ...state,\r\n      patient: action.patient\r\n    }\r\n  }),\r\n  on(fromPatientActions.loadPatientsSuccess, (state: PatientState, action) => {\r\n    console.log('loadPatientsSuccess state: ', state);\r\n    console.log('loadPatientsSuccess action: ', action);\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.loadPatientsFailure, (state, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.createPatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.createPatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.updatePatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.updatePatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  }),\r\n  on(fromPatientActions.deletePatientSuccess, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      patients: action.patients\r\n    }\r\n  }),\r\n  on(fromPatientActions.deletePatientFailure, (state: PatientState, action) => {\r\n    return {\r\n      ...state,\r\n      error: action.error\r\n    }\r\n  })\r\n)"
+                }
+            ],
+            "src/app/core/store/reducers/index.ts": [
+                {
+                    "name": "metaReducers",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/reducers/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MetaReducer[]",
+                    "defaultValue": "!environment.production\r\n    ? []\r\n    : []"
+                },
+                {
+                    "name": "reducers",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/reducers/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ActionReducerMap<AppState>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/app/shared/header/header.component.stories.ts": [
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/shared/header/header.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "routerMock",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/shared/header/header.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  events: () => {},\r\n  navigate: () => {},\r\n}"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/shared/header/header.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/app/core/store/patient/patient.selectors.ts": [
+                {
+                    "name": "selectPatient",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\r\n  selectPatientFeature,\r\n  (state: PatientState) => state.patient\r\n)"
+                },
+                {
+                    "name": "selectPatientFeature",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createFeatureSelector<PatientState>(\r\n  patientStateFeatureKey\r\n)"
+                },
+                {
+                    "name": "selectPatients",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/store/patient/patient.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\r\n  selectPatientFeature,\r\n  (state: PatientState) => state.patients\r\n)"
+                }
             ]
         },
         "groupedFunctions": {},
-        "groupedEnumerations": {},
+        "groupedEnumerations": {
+            "src/app/core/store/patient/patient.actions.ts": [
+                {
+                    "name": "PatientActionTypes",
+                    "childs": [
+                        {
+                            "name": "LOAD_PATIENTS",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient List Component] Load Patients"
+                        },
+                        {
+                            "name": "LOAD_PATIENTS_SUCCESS",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Effect] Load Patients Success"
+                        },
+                        {
+                            "name": "LOAD_PATIENTS_FAILURE",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Effect] Load Patients Failure"
+                        },
+                        {
+                            "name": "LOAD_PATIENT",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient List Component] Load Patient"
+                        },
+                        {
+                            "name": "LOAD_PATIENT_SUCCESS",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Effect] Load Patient Success"
+                        },
+                        {
+                            "name": "LOAD_PATIENT_FAILURE",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Effect] Load Patient Failure"
+                        },
+                        {
+                            "name": "CREATE_PATIENT",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Create] Create Patient"
+                        },
+                        {
+                            "name": "CREATE_PATIENT_SUCCESS",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Create Success] Create Patient Success"
+                        },
+                        {
+                            "name": "CREATE_PATIENT_FAILURE",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Create Failure] Create Patient Failure"
+                        },
+                        {
+                            "name": "UPDATE_PATIENT",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Update] Update Patient"
+                        },
+                        {
+                            "name": "UPDATE_PATIENT_SUCCESS",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Update Success] Update Patient Success"
+                        },
+                        {
+                            "name": "UPDATE_PATIENT_FAILURE",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Update Failure] Update Patient Failure"
+                        },
+                        {
+                            "name": "DELETE_PATIENT",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Delete] Delete Patient"
+                        },
+                        {
+                            "name": "DELETE_PATIENT_SUCCESS",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Delete Success] Delete Patient Success"
+                        },
+                        {
+                            "name": "DELETE_PATIENT_FAILURE",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "[Patient Delete Failure] Delete Patient Failure"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "file": "src/app/core/store/patient/patient.actions.ts"
+                }
+            ]
+        },
         "groupedTypeAliases": {}
     },
     "routes": {
@@ -1166,7 +2456,10 @@
                 "children": [
                     {
                         "path": "",
-                        "component": "PatientListComponent"
+                        "component": "PatientListComponent",
+                        "resolve": {
+                            "patients": "PatientListResolver"
+                        }
                     }
                 ],
                 "kind": "module"
@@ -1184,6 +2477,16 @@
                 "name": "AppComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/components/forms/patient-form/patient-form.component.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "controlsConfig",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -1221,6 +2524,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "registerForm",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/components/forms/patient-form/patient-form.component.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -1232,7 +2545,7 @@
                 "linktype": "component",
                 "name": "PatientFormComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
@@ -1290,16 +2603,283 @@
                 "linktype": "injectable",
                 "name": "PatientService",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
-                "filePath": "src/app/core/types/patient.ts",
+                "filePath": "src/app/core/services/store.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "StoreService",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/index.ts",
                 "type": "interface",
                 "linktype": "interface",
-                "name": "PatientAddress",
+                "name": "PatientState",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/index.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/index.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "metaReducers",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/index.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "patientStateFeatureKey",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/index.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "reducers",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "createPatient",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "createPatientFailure",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "createPatientSuccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "deletePatient",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "deletePatientFailure",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "deletePatientSuccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "loadPatient",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "loadPatientFailure",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "loadPatients",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "loadPatientsFailure",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "loadPatientsSuccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "loadPatientSuccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "updatePatient",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "updatePatientFailure",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "updatePatientSuccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.effects.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "PatientEffects",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectPatient",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectPatientFeature",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/patient/patient.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectPatients",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/reducers/index.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "AppState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/reducers/index.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "metaReducers",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/store/reducers/index.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "reducers",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -1308,16 +2888,46 @@
                 "linktype": "interface",
                 "name": "PatientProfile",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
-                "filePath": "src/app/core/types/patient.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "PatientProfileFlat",
+                "filePath": "src/app/shared/header/header.component.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/shared/header/header.component.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "routerMock",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/shared/header/header.component.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/shared/header/header.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "HeaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -1325,6 +2935,15 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "PatientListComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/views/patient-list/patient-list.resolver.ts",
+                "type": "guard",
+                "linktype": "guard",
+                "name": "PatientListResolver",
                 "coveragePercent": 0,
                 "coverageCount": "0/3",
                 "status": "low"

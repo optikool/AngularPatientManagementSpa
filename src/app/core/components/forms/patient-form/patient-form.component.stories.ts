@@ -40,8 +40,10 @@ const Template: Story = (args) => ({
 
 export const NewProfile = Template.bind({});
 NewProfile.args = {
+  createUpdate: 'Create',
   patientProfile,
   isNew: true,
+  isEditable: false
 };
 
 const controlsConfig = {
@@ -74,8 +76,9 @@ patientProfile = {
 
 export const EditProfile = Template.bind({});
 EditProfile.args = {
-  isNew: true,
+  createUpdate: 'Update',
+  isNew: false,
   patientProfile,
   controlsConfig,
-  registerForm: new FormBuilder(),
+  registerForm: new FormBuilder()
 };

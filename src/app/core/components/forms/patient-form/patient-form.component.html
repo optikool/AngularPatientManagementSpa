@@ -7,50 +7,50 @@
       <div fxLayout="row" class="patient-form-row">
         <mat-form-field appearance="outline" class="full-width" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
           <mat-label>Name</mat-label>
-          <input formControlName="name" matInput placeholder="Patient Name">
+          <input formControlName="name" matInput placeholder="Patient Name" [attr.disabled]="isEditable">
           <mat-hint>Name of patient.</mat-hint>
         </mat-form-field>
       </div>
       <div fxLayout="row" class="patient-form-row">
           <mat-form-field appearance="outline" class="full-width" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
             <mat-label>Street</mat-label>
-            <input formControlName="street" matInput placeholder="Patient street address">
+            <input formControlName="street" matInput placeholder="Patient street address" [attr.disabled]="isEditable">
           </mat-form-field>
       </div>
       <div fxLayout="row wrap" class="patient-form-row">
           <mat-form-field appearance="outline" class="full-width group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
             <mat-label>City</mat-label>
-            <input formControlName="city" matInput placeholder="Patient city address">
+            <input formControlName="city" matInput placeholder="Patient city address" [attr.disabled]="isEditable">
             <mat-hint>Patient city address.</mat-hint>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
             <mat-label>State</mat-label>
-            <input formControlName="state" matInput placeholder="Patient state address">
+            <input formControlName="state" matInput placeholder="Patient state address" [attr.disabled]="isEditable">
             <mat-hint>Patient state address.</mat-hint>
           </mat-form-field>
           <mat-form-field appearance="outline" class="full-width group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
             <mat-label>Zip</mat-label>
-            <input formControlName="zipCode" matInput placeholder="Patient zip">
+            <input formControlName="zipCode" matInput placeholder="Patient zip" [attr.disabled]="isEditable">
             <mat-hint>Patient zip code.</mat-hint>
           </mat-form-field>
       </div>
       <div fxLayout="row" class="patient-form-row">
           <mat-form-field appearance="outline" class="full-width" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
             <mat-label>Clinic</mat-label>
-            <input formControlName="clinic" matInput placeholder="Patient clinic">
+            <input formControlName="clinic" matInput placeholder="Patient clinic" [attr.disabled]="isEditable">
           </mat-form-field>
       </div>
       <div fxLayout="row" class="patient-form-row">
           <mat-form-field appearance="outline" class="full-width" fxFlex="100%" fxLayoutGap="16px grid">
             <mat-label>Description</mat-label>
-            <textarea formControlName="description" matInput placeholder="Description for patient."></textarea>
+            <textarea formControlName="description" matInput placeholder="Description for patient." [attr.disabled]="isEditable"></textarea>
           </mat-form-field>
       </div>
       <div fxLayout="row" class="full-width-footer">
           <button mat-raised-button type="submit" [disabled]="registerForm.invalid" color="primary"
             class="footer-button">{{createUpdate}}</button>
-          <button mat-raised-button type="reset" (click)="onCancel()" color="warn" class="footer-button">Cancel</button>
+          <button mat-raised-button mat-dialog-close type="reset" (click)="onCancel()" color="warn" class="footer-button">Cancel</button>
       </div>
     </form>
   </mat-card-content>

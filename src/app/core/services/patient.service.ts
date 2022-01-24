@@ -1,19 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { PatientProfile } from '../types/patient';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PatientFormComponent } from '../components/forms/patient-form/patient-form.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PatientService {
-  constructor() {}
+  constructor(private dialog: MatDialog) {}
 
   loadPatients(): PatientProfile[] {
     return this.payload;
   }
 
-  openModalDialog(): Observable<any> {
-    return of('NONE');
+  openModalDialog(payload: PatientProfile, type: string): Observable<any> {
+    console.log('openModalDialog payload: ', payload);
+    // return of('NONE');
+    const isEditable = type === 'view' ? false : true;
+    const dialogRef = this.dialog.open(PatientFormComponent, {
+      maxWidth: '730px',
+      disableClose: true,
+      data: {
+        isNew: isEditable,
+        patientProfile: payload
+      },
+    });
+
+    return dialogRef.afterClosed();
   }
 
   payload: PatientProfile[] = [

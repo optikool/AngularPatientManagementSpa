@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PatientProfile } from 'src/app/core/types/patient';
 
 @Component({
@@ -14,8 +15,12 @@ export class PatientFormComponent implements OnInit {
   public controlsConfig: PatientProfile;
   public registerForm: FormGroup;
   public createUpdate: string = this.isNew ? 'Create' : 'Update';
+  public isEditable: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<PatientFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: PatientProfile) {
     this.registerForm = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
@@ -64,15 +69,20 @@ export class PatientFormComponent implements OnInit {
     console.log('this.patientProfile: ', this.patientProfile);
     console.log('this.controlsConfig: ', this.controlsConfig);
     this.registerForm.reset(this.controlsConfig);
+    this.isEditable = this.isNew;
   }
 
   onSubmit(): void {
     if (this.registerForm.invalid) {
       return;
     }
+
+    this.dialogRef.close(this.registerForm.value)
   }
 
-  onCancel(): void {}
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
 
   get f() {
     return this.registerForm && this.registerForm.controls;

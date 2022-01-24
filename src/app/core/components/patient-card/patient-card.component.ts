@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PatientService } from '../../services/patient.service';
 import { PatientProfile } from '../../types/patient';
 
 @Component({
@@ -10,8 +11,8 @@ export class PatientCardComponent implements OnInit {
   @Input() public patientProfile: PatientProfile;
   @Input() public isFullProfile = true;
 
-  
-  constructor() {
+
+  constructor(private patientService: PatientService) {
     this.patientProfile = {
       id: 0,
       name: '',
@@ -28,5 +29,10 @@ export class PatientCardComponent implements OnInit {
 
   loadProfile(): void {
     console.log('loadProfile called id: ', this.patientProfile.id);
+    console.log('loadNewProfile was called: ', this.patientProfile);
+    this.patientService.openModalDialog(this.patientProfile, 'NewEdit')
+      .subscribe(result => {
+        console.log('Result from loadNewProfile: ', result);
+      });
   }
 }

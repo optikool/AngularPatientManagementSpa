@@ -1,7 +1,11 @@
-<div class="container">
-  <div class="patient-list" fxLayout="row wrap" fxLayoutGap="16px grid">
-    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="50" *ngFor="let patient of patientList">
-      <app-patient-card [patientProfile]="patient" [isFullProfile]="false"></app-patient-card>
+<mat-card>
+  <mat-card-content>
+    <div class="container">
+      <div class="patient-list" fxLayout="row wrap" fxLayoutGap="16px grid">
+        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="50" *ngFor="let patient of patientList | async">
+          <app-patient-card [patientProfile]="patient" [isFullProfile]="false"></app-patient-card>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
