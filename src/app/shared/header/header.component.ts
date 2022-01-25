@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { PatientState } from '../../core/store/patient';
 import { PatientService } from '../..//core/services/patient.service';
 import { PatientProfile } from '../../core/types/patient';
+import { Store } from '@ngrx/store';
+import * as fromActions from '../../core/store/patient/patient.actions';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -20,16 +22,27 @@ export class HeaderComponent implements OnInit {
     clinic: '',
     description: '',
   };
-  constructor(private patientService: PatientService) {}
+  private ngOnDestroy$ = new Subject();
+
+  constructor(
+    private patientService: PatientService,
+    private readonly store: Store<PatientState>) {}
 
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.ngOnDestroy$.next(true);
+    this.ngOnDestroy$.complete();
+  }
+
   loadNewProfile(): void {
-    console.log('loadNewProfile was called');
     this.patientService.openModalDialog(this.patientProfile, 'new')
+      .pipe(takeUntil(this.ngOnDestroy$))
       .subscribe(result => {
-        console.log('Result from loadNewProfile: ', result);
+        if (result) {
+          this.store.dispatch(fromActions.createPatient(result.payload))
+        }
       });
   }
 }

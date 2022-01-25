@@ -5,18 +5,22 @@ import { PatientService } from '../../core/services/patient.service';
 import { initialState } from '../../core/store/patient';
 import { PatientListResolver } from './patient-list.resolver';
 
-describe('CharactersResolver', () => {
+describe('PatientListResolver', () => {
   let patientListResolver: PatientListResolver;
   let store: MockStore;
   let route: ActivatedRouteSnapshot;
   let state: RouterStateSnapshot;
-  let patientService: PatientService;
+
+  const patientService = {
+    loadPatients: jasmine.createSpy()
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [
         PatientService,
         provideMockStore({ initialState }),
+        { provide: PatientService, useValue: patientService},
         { provide: ActivatedRouteSnapshot, useValue: { snapshot: { paramMap: convertToParamMap({ id: 1 }) }}},
         { provide: RouterStateSnapshot, useValue: { snapshot: { url: '' }}},
       ]
@@ -27,14 +31,10 @@ describe('CharactersResolver', () => {
       route = TestBed.inject(ActivatedRouteSnapshot);
       state = TestBed.inject(RouterStateSnapshot);
       store = TestBed.inject(MockStore);
-      store.setState({
-        patients: patientService.loadPatients()
-      });
-      store.refreshState();
     });
   }));
 
-  it('should be created', () => {
+  it('should create PatientListResolver', () => {
     expect(patientListResolver).toBeTruthy();
   });
 

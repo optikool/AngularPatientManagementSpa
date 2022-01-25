@@ -5,10 +5,9 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromActions from '../../core/store/patient/patient.actions';
 import { PatientState } from '../../core/store/patient';
-import { selectPatients } from '../../core/store/patient/patient.selectors';
 
 @Injectable({
   providedIn: 'root'

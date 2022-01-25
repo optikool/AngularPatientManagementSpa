@@ -8,6 +8,7 @@ export const patientStateFeatureKey = 'patientState';
 export interface PatientState {
   patients: PatientProfile[];
   patient: PatientProfile;
+  medicalClinics: any;
   error?: any;
 }
 
@@ -23,30 +24,19 @@ export const initialState: PatientState = {
     clinic: '',
     description: '',
   },
+  medicalClinics: {},
   error: undefined
 };
 
 export const reducers = createReducer(
   initialState,
-  // on(fromPatientActions.loadPatients, (state: PatientState, action) => {
-  //   console.log('reducers loadPatients action: ', action);
-  //   console.log('reducers loadPatients state: ', state);
-  //   return {
-  //     ...state,
-  //     //patients: action.patients
-  //   }
-  // }),
   on(fromPatientActions.loadPatientSuccess, (state: PatientState, action) => {
-    console.log('loadPatientSuccess state: ', state);
-    console.log('loadPatientSuccess action: ', action);
     return {
       ...state,
       patient: action.patient
     }
   }),
   on(fromPatientActions.loadPatientsSuccess, (state: PatientState, action) => {
-    console.log('loadPatientsSuccess state: ', state);
-    console.log('loadPatientsSuccess action: ', action);
     return {
       ...state,
       patients: action.patients
@@ -89,6 +79,18 @@ export const reducers = createReducer(
     }
   }),
   on(fromPatientActions.deletePatientFailure, (state: PatientState, action) => {
+    return {
+      ...state,
+      error: action.error
+    }
+  }),
+  on(fromPatientActions.loadClinicsSuccess, (state, action) => {
+    return {
+      ...state,
+      medicalClinics: action.medicalClinics
+    }
+  }),
+  on(fromPatientActions.loadClinicsFailure, (state, action) => {
     return {
       ...state,
       error: action.error

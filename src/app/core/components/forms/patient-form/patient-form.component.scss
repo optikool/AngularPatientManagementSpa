@@ -1,5 +1,6 @@
 .mat-card {
   max-width: 680px;
+  box-shadow: none;
 
   .mat-card-title {
     margin-bottom: 0;
@@ -18,16 +19,26 @@
   }
 
   .patient-form-row {
-    margin: 20px 0;
+    margin: 15px 0;
 
     .group {
-      margin: 0 0 20px 0 !important;
+      margin: 0 5px 20px 0 !important;
 
       &:last-child {
         margin: 0 !important;
       }
     }
   }
+}
+
+.summary {
+  mat-label {
+    font-weight: bold;
+  }
+}
+
+.create-edit {
+
 }
 
 ::ng-deep .mat-grid-tile-content {
@@ -42,12 +53,16 @@
   overflow: visible !important;
 }
 
-.full-width {
-  width: 100%;
+.description {
   margin: 0 20px;
+
+  .mat-form-field {
+    width: 100%;
+  }
 
   textarea {
     min-height: 120px;
+    width: 100%;
   }
 }
 

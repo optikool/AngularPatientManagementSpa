@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { PatientService } from '../../services/patient.service';
+import { PatientState } from '../../store/patient';
 import { PatientProfile } from '../../types/patient';
+import * as fromActions from '../../store/patient/patient.actions';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-patient-card',
@@ -10,9 +14,16 @@ import { PatientProfile } from '../../types/patient';
 export class PatientCardComponent implements OnInit {
   @Input() public patientProfile: PatientProfile;
   @Input() public isFullProfile = true;
+  @Input() public medicalClinics;
 
+  public clinicName = '';
+  private ngOnDestroy$ = new Subject();
 
-  constructor(private patientService: PatientService) {
+  constructor(
+    private patientService: PatientService,
+    private readonly store: Store<PatientState>
+  ) {
+
     this.patientProfile = {
       id: 0,
       name: '',
@@ -25,14 +36,30 @@ export class PatientCardComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.clinicName = this.medicalClinics[this.patientProfile.clinic];
+  }
+
+  ngOnDestroy(): void {
+    this.ngOnDestroy$.next(true);
+    this.ngOnDestroy$.complete();
+  }
+
+  getClinic(abv: string): string {
+    return this.medicalClinics[abv];
+  }
 
   loadProfile(): void {
-    console.log('loadProfile called id: ', this.patientProfile.id);
-    console.log('loadNewProfile was called: ', this.patientProfile);
-    this.patientService.openModalDialog(this.patientProfile, 'NewEdit')
+    this.patientService.openModalDialog(this.patientProfile, 'view')
+      .pipe(takeUntil(this.ngOnDestroy$))
       .subscribe(result => {
-        console.log('Result from loadNewProfile: ', result);
+        if (result) {
+          if (result.delete) {
+            this.store.dispatch(fromActions.deletePatient({id: result.payload.id}));
+          } else {
+            this.store.dispatch(fromActions.updatePatient(result.payload));
+          }
+        }
       });
   }
 }

@@ -1,12 +1,8 @@
 import { moduleMetadata, Meta, Story } from '@storybook/angular';
 import { HeaderComponent } from './header.component';
-import { Router } from '@angular/router';
 import { MaterialsModule } from '../../core/materials/materials.module';
-
-let routerMock = {
-  events: () => {},
-  navigate: () => {},
-};
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialState } from 'src/app/core/store/patient';
 
 export default {
   title: 'App/Shared/Header',
@@ -15,6 +11,7 @@ export default {
     moduleMetadata({
       declarations: [HeaderComponent],
       imports: [MaterialsModule],
+      providers: [provideMockStore({ initialState })]
     }),
   ],
 } as Meta;

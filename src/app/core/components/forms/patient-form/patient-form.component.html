@@ -1,57 +1,140 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title><mat-icon>account_circle</mat-icon>{{createUpdate}} Patient</mat-card-title>
+    <mat-card-title>
+      <mat-icon>account_circle</mat-icon>{{header}} Patient
+    </mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <div fxLayout="row" class="patient-form-row">
-        <mat-form-field appearance="outline" class="full-width" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
-          <mat-label>Name</mat-label>
-          <input formControlName="name" matInput placeholder="Patient Name" [attr.disabled]="isEditable">
-          <mat-hint>Name of patient.</mat-hint>
-        </mat-form-field>
-      </div>
-      <div fxLayout="row" class="patient-form-row">
-          <mat-form-field appearance="outline" class="full-width" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
-            <mat-label>Street</mat-label>
-            <input formControlName="street" matInput placeholder="Patient street address" [attr.disabled]="isEditable">
-          </mat-form-field>
-      </div>
-      <div fxLayout="row wrap" class="patient-form-row">
-          <mat-form-field appearance="outline" class="full-width group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
-            <mat-label>City</mat-label>
-            <input formControlName="city" matInput placeholder="Patient city address" [attr.disabled]="isEditable">
-            <mat-hint>Patient city address.</mat-hint>
-          </mat-form-field>
+  <mat-card-content mat-dialog-content>
+    <ng-container *ngIf="isEditable === false">
+      <div class="summary">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div fxLayout="row" class="patient-form-row">
+            <div appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
+              <mat-label>Name: </mat-label>
+              {{patientProfile.name}}
+            </div>
+          </div>
+          <div fxLayout="row" class="patient-form-row">
+            <div appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
+              <mat-label>Street: </mat-label>
+              {{patientProfile.street}}
+            </div>
+          </div>
+          <div fxLayout="row wrap" class="patient-form-row">
+            <div appearance="outline" class="group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%"
+              fxLayoutGap="16px grid">
+              <mat-label>City: </mat-label>
+              {{patientProfile.city}}
+            </div>
 
-          <mat-form-field appearance="outline" class="full-width group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
-            <mat-label>State</mat-label>
-            <input formControlName="state" matInput placeholder="Patient state address" [attr.disabled]="isEditable">
-            <mat-hint>Patient state address.</mat-hint>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="full-width group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
-            <mat-label>Zip</mat-label>
-            <input formControlName="zipCode" matInput placeholder="Patient zip" [attr.disabled]="isEditable">
-            <mat-hint>Patient zip code.</mat-hint>
-          </mat-form-field>
+            <div appearance="outline" class="group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%"
+              fxLayoutGap="16px grid">
+              <mat-label>State: </mat-label>
+              {{patientProfile.state}}
+            </div>
+            <div appearance="outline" class="group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%"
+              fxLayoutGap="16px grid">
+              <mat-label>Zip: </mat-label>
+              {{patientProfile.zipCode}}
+            </div>
+          </div>
+          <div fxLayout="row" class="patient-form-row">
+            <div appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
+              <mat-label>Clinic: </mat-label>
+              {{clinicName}}
+            </div>
+          </div>
+          <div fxLayout="row" class="patient-form-row">
+            <div appearance="outline" fxFlex="100%" fxLayoutGap="16px grid">
+              <mat-label>Description: </mat-label>
+              {{patientProfile.description}}
+            </div>
+          </div>
+          <div fxLayout="row" class="full-width-footer">
+            <button mat-raised-button type="submit" [disabled]="registerForm.invalid" color="primary"
+              class="footer-button">
+              {{createUpdate}}
+            </button>
+            <button mat-raised-button type="button" [disabled]="!patientProfile.id" color="warn" class="footer-button"
+              (click)="onDelete()">
+              Delete
+            </button>
+            <button mat-raised-button mat-dialog-close type="reset" (click)="onCancel()" class="footer-button">
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
-      <div fxLayout="row" class="patient-form-row">
-          <mat-form-field appearance="outline" class="full-width" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
-            <mat-label>Clinic</mat-label>
-            <input formControlName="clinic" matInput placeholder="Patient clinic" [attr.disabled]="isEditable">
-          </mat-form-field>
+    </ng-container>
+    <ng-container *ngIf="isEditable">
+      <div class="create-edit">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div fxLayout="row" class="patient-form-row">
+            <mat-form-field appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
+              <mat-label>Name</mat-label>
+              <input formControlName="name" matInput placeholder="Patient Name">
+              <mat-hint>Name of patient.</mat-hint>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" class="patient-form-row">
+            <mat-form-field appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="16px grid">
+              <mat-label>Street</mat-label>
+              <input formControlName="street" matInput placeholder="Patient street address">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap" class="patient-form-row">
+            <mat-form-field appearance="outline" class="group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%"
+              fxLayoutGap="16px grid">
+              <mat-label>City</mat-label>
+              <input formControlName="city" matInput placeholder="Patient city address">
+              <mat-hint>Patient city address.</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%"
+              fxLayoutGap="16px grid">
+              <mat-label>State</mat-label>
+              <input formControlName="state" matInput placeholder="Patient state address">
+              <mat-hint>Patient state address.</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="group" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%"
+              fxLayoutGap="16px grid">
+              <mat-label>Zip</mat-label>
+              <input formControlName="zipCode" matInput placeholder="Patient zip">
+              <mat-hint>Patient zip code.</mat-hint>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" class="patient-form-row">
+            <mat-form-field appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="66%" fxLayoutGap="16px grid">
+              <mat-label>Clinic</mat-label>
+              <mat-select formControlName="clinic">
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let clinic of clinicsSelectList" [value]="clinic.value">
+                  {{clinic.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" class="patient-form-row description">
+            <mat-form-field appearance="outline" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayoutGap="16px grid">
+              <mat-label>Description</mat-label>
+              <textarea formControlName="description" matInput placeholder="Description for patient."></textarea>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" class="full-width-footer">
+            <button mat-raised-button type="submit" [disabled]="registerForm.invalid" color="primary"
+              class="footer-button">
+              {{createUpdate}}
+            </button>
+            <button mat-raised-button type="button" [disabled]="!patientProfile.id" color="warn" class="footer-button"
+              (click)="onDelete()">
+              Delete
+            </button>
+            <button mat-raised-button mat-dialog-close type="reset" (click)="onCancel()" class="footer-button">
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
-      <div fxLayout="row" class="patient-form-row">
-          <mat-form-field appearance="outline" class="full-width" fxFlex="100%" fxLayoutGap="16px grid">
-            <mat-label>Description</mat-label>
-            <textarea formControlName="description" matInput placeholder="Description for patient." [attr.disabled]="isEditable"></textarea>
-          </mat-form-field>
-      </div>
-      <div fxLayout="row" class="full-width-footer">
-          <button mat-raised-button type="submit" [disabled]="registerForm.invalid" color="primary"
-            class="footer-button">{{createUpdate}}</button>
-          <button mat-raised-button mat-dialog-close type="reset" (click)="onCancel()" color="warn" class="footer-button">Cancel</button>
-      </div>
-    </form>
+    </ng-container>
   </mat-card-content>
 </mat-card>

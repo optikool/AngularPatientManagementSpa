@@ -17,6 +17,9 @@ export enum PatientActionTypes {
   DELETE_PATIENT = '[Patient Delete] Delete Patient',
   DELETE_PATIENT_SUCCESS = '[Patient Delete Success] Delete Patient Success',
   DELETE_PATIENT_FAILURE = '[Patient Delete Failure] Delete Patient Failure',
+  LOAD_CLINICS = '[Load Clinics] Load Clinics',
+  LOAD_CLINICS_SUCCESS = '[Load Clinics Success] Load Clinics Success',
+  LOAD_CLINICS_FAILURE = '[Load Clinics Failure] Load Clinics Failure',
 }
 
 export const loadPatients = createAction(
@@ -89,6 +92,16 @@ export const deletePatientSuccess = createAction(
 );
 
 export const deletePatientFailure = createAction(
+  PatientActionTypes.DELETE_PATIENT_FAILURE,
+  props<{ error: any }>()
+);
+
+export const loadClinicsSuccess = createAction(
+  PatientActionTypes.DELETE_PATIENT_SUCCESS,
+  props<{ medicalClinics  }>()
+);
+
+export const loadClinicsFailure = createAction(
   PatientActionTypes.DELETE_PATIENT_FAILURE,
   props<{ error: any }>()
 );

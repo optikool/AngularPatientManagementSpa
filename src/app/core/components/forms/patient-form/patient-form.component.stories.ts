@@ -5,6 +5,7 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { PatientProfile } from '../../../types/patient';
 import { MaterialsModule } from '../../../materials/materials.module';
 import { PatientFormComponent } from './patient-form.component';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 let patientProfile: PatientProfile = {
   id: null,
@@ -28,8 +29,12 @@ export default {
         FlexLayoutModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
+        MatDialogModule
       ],
-      providers: [],
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+	      { provide: MAT_DIALOG_DATA, useValue: [] }
+      ],
     }),
   ],
 } as Meta;
@@ -43,7 +48,7 @@ NewProfile.args = {
   createUpdate: 'Create',
   patientProfile,
   isNew: true,
-  isEditable: false
+  isEditable: true
 };
 
 const controlsConfig = {
@@ -80,5 +85,6 @@ EditProfile.args = {
   isNew: false,
   patientProfile,
   controlsConfig,
+  isEditable: true,
   registerForm: new FormBuilder()
 };

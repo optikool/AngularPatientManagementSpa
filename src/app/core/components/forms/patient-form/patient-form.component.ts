@@ -1,7 +1,8 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PatientProfile } from 'src/app/core/types/patient';
+import { PatientProfile } from '../../../types/patient';
+import { PatientService } from '../../../services/patient.service';
 
 @Component({
   selector: 'app-patient-form',
@@ -10,17 +11,23 @@ import { PatientProfile } from 'src/app/core/types/patient';
 })
 export class PatientFormComponent implements OnInit {
   @Input() public patientProfile: PatientProfile;
-  @Input() public isNew: boolean = false;
+  @Input() public isNew: boolean;
 
   public controlsConfig: PatientProfile;
   public registerForm: FormGroup;
-  public createUpdate: string = this.isNew ? 'Create' : 'Update';
+  public createUpdate: string;
   public isEditable: boolean = false;
+  public header: string = '';
+  public medicalClinics;
+  public clinicName = '';
+  public clinicsSelectList;
+
 
   constructor(
+    private patientService: PatientService,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<PatientFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PatientProfile) {
+    @Inject(MAT_DIALOG_DATA) public data) {
     this.registerForm = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
@@ -56,20 +63,24 @@ export class PatientFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.medicalClinics = this.patientService.loadClinics();
+    this.createUpdate = this.data.type === 'new' ? 'Create' : this.data.type === 'view' ? 'Edit' : 'Update';
+    this.patientProfile = this.data.patientProfile;
+    this.clinicName = this.medicalClinics[this.patientProfile.clinic];
+    this.clinicsSelectList = this.patientService.getFomrattedClinics();
     this.controlsConfig = {
-      id: this.patientProfile.id,
-      name: this.patientProfile.name,
-      street: this.patientProfile.street,
-      city: this.patientProfile.city,
-      state: this.patientProfile.state,
-      zipCode: this.patientProfile.zipCode,
-      clinic: this.patientProfile.clinic,
-      description: this.patientProfile.description,
+      id: this.data.patientProfile.id,
+      name: this.data.patientProfile.name,
+      street: this.data.patientProfile.street,
+      city: this.data.patientProfile.city,
+      state: this.data.patientProfile.state,
+      zipCode: this.data.patientProfile.zipCode,
+      clinic: this.data.patientProfile.clinic,
+      description: this.data.patientProfile.description,
     };
-    console.log('this.patientProfile: ', this.patientProfile);
-    console.log('this.controlsConfig: ', this.controlsConfig);
+
     this.registerForm.reset(this.controlsConfig);
-    this.isEditable = this.isNew;
+    this.isEditable = this.data.type === 'view' ? false : true;
   }
 
   onSubmit(): void {
@@ -77,7 +88,16 @@ export class PatientFormComponent implements OnInit {
       return;
     }
 
-    this.dialogRef.close(this.registerForm.value)
+    if (this.isEditable) {
+      this.dialogRef.close({payload: this.registerForm.value, delete: false});
+    } else {
+      this.createUpdate = 'Update';
+      this.isEditable = true;
+    }
+  }
+
+  onDelete(): void {
+    this.dialogRef.close({payload: this.registerForm.value, delete: true});
   }
 
   onCancel(): void {

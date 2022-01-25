@@ -1,6 +1,8 @@
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { provideMockStore } from '@ngrx/store/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { MaterialsModule } from '../../materials/materials.module';
+import { initialState } from '../../store/patient';
 import { PatientCardComponent } from './patient-card.component';
 
 const patientProfile = {
@@ -24,7 +26,7 @@ export default {
         MaterialsModule,
         FlexLayoutModule
       ],
-      providers: [],
+      providers: [provideMockStore({ initialState })],
     }),
   ]
 } as Meta;

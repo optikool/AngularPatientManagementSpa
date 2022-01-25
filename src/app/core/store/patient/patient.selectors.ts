@@ -14,3 +14,8 @@ export const selectPatient = createSelector(
   selectPatientFeature,
   (state: PatientState) => state.patient
 );
+
+export const selectClinics = createSelector(
+  selectPatientFeature,
+  (state: PatientState) => state.medicalClinics
+)

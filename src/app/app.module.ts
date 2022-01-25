@@ -16,9 +16,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { metaReducers, reducers } from './core/store/reducers';
-import { patientStateFeatureKey } from './core/store/patient';
 
 @NgModule({
   declarations: [
