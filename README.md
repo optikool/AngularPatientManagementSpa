@@ -4,11 +4,11 @@ Build a simple Patient management spa with Angular.
 
 - Show a grid of patients with the following columns :
 
-- Patient Name (Link to show patient details in a modal)
+  - Patient Name (Link to show patient details in a modal)
 
--- Address (Text)
+  - Address (Text)
 
--- Associated Clinic (Auto complete)
+  - Associated Clinic (Auto complete)
 
 - Ability to add a new patient via a "Create Patient" modal
 
