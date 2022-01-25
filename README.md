@@ -1,6 +1,31 @@
-# PatientManagementSpa
+# Patient Management SPA
+
+Build a simple Patient management spa with Angular.
+
+- Show a grid of patients with the following columns :
+
+- Patient Name (Link to show patient details in a modal)
+
+-- Address (Text)
+
+-- Associated Clinic (Auto complete)
+
+- Ability to add a new patient via a "Create Patient" modal
+
+- Ability to update existing patients
+
+- Ability to delete existing patients
+
+- The grid needs to be responsive
+
+- Build the modal as a reusable component across Add, Update, View and Delete
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.3.
+
+## Setup
+Run `git clone https://github.com/optikool/AngularPatientManagementSpa.git` to clone repo.
+
+Run `npm install` to install node packages.
 
 ## Development server
 
@@ -17,6 +42,10 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Storybook
+
+Run `npm run storybook` to launch Storybook
 
 ## Running end-to-end tests
 
